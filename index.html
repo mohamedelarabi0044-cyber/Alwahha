@@ -55,10 +55,15 @@
         .item-name { font-weight: 600; font-size: 16px; color: #2c3e50; margin-bottom: 4px; }
         .item-price { color: #27ae60; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
         
-        /* تنسيقات الاختيارات والملاحظات */
         .item-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
         .size-select, .bread-select { padding: 4px 8px; border-radius: 6px; border: 1px solid #ccc; font-family: 'Cairo'; font-size: 13px; background-color: #f9f9f9; color: #a81c1c; font-weight: bold; outline: none; cursor: pointer; }
-        .item-note { width: 90%; padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Cairo'; font-size: 13px; margin-top: 8px; outline: none; transition: 0.3s; }
+        
+        /* تنسيقات زر وخانة الملاحظات المخفية */
+        .add-note-btn { background: none; border: none; color: #888; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; margin-top: 8px; font-family: 'Cairo'; display: flex; align-items: center; width: fit-content; transition: 0.3s; }
+        .add-note-btn:hover { color: #a81c1c; }
+        .item-note-container { display: none; width: 95%; margin-top: 5px; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .item-note { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Cairo'; font-size: 13px; outline: none; transition: 0.3s; box-sizing: border-box; }
         .item-note:focus { border-color: #a81c1c; box-shadow: 0 0 5px rgba(168, 28, 28, 0.2); }
 
         .quantity-control { display: flex; align-items: center; gap: 8px; margin-right: 10px; margin-top: 5px; }
@@ -109,7 +114,6 @@
 </head>
 <body>
 
-    <!-- الغلاف -->
     <div class="page cover-page active" id="page-0">
         <div class="cover-content">
             <h1>الواحة</h1>
@@ -123,39 +127,21 @@
     </div>
 
     <div class="container">
-        
         <!-- الصفحات من 1 لـ 10 -->
-        <div class="page" id="page-1">
-            <div class="category"><h2 class="category-title">سندوتشات الفول</h2><div id="foul-list"></div></div>
-        </div>
-        <div class="page" id="page-2">
-            <div class="category"><h2 class="category-title">سندوتشات البطاطس</h2><div id="batates-list"></div></div>
-        </div>
-        <div class="page" id="page-3">
-            <div class="category"><h2 class="category-title">سندوتشات الطعمية</h2><div id="ta3meya-list"></div></div>
-        </div>
+        <div class="page" id="page-1"><div class="category"><h2 class="category-title">سندوتشات الفول</h2><div id="foul-list"></div></div></div>
+        <div class="page" id="page-2"><div class="category"><h2 class="category-title">سندوتشات البطاطس</h2><div id="batates-list"></div></div></div>
+        <div class="page" id="page-3"><div class="category"><h2 class="category-title">سندوتشات الطعمية</h2><div id="ta3meya-list"></div></div></div>
         <div class="page" id="page-4">
             <div class="category"><h2 class="category-title">سندوتشات الأومليت</h2><div id="omelet-list"></div></div>
             <div class="category"><h2 class="category-title">سندوتشات متنوع</h2><div id="motanaw3-list"></div></div>
         </div>
-        <div class="page" id="page-5">
-            <div class="category"><h2 class="category-title">أقراص الطعمية</h2><div id="disk-list"></div></div>
-        </div>
-        <div class="page" id="page-6">
-            <div class="category"><h2 class="category-title">سفره الواحة (أطباق)</h2><div id="sofra1-list"></div></div>
-        </div>
-        <div class="page" id="page-7">
-            <div class="category"><h2 class="category-title">سفره الواحة (إضافات)</h2><div id="sofra2-list"></div></div>
-        </div>
-        <div class="page" id="page-8">
-            <div class="category"><h2 class="category-title">ركن العلب (فول)</h2><div id="elba1-list"></div></div>
-        </div>
-        <div class="page" id="page-9">
-            <div class="category"><h2 class="category-title">ركن العلب (إضافات)</h2><div id="elba2-list"></div></div>
-        </div>
+        <div class="page" id="page-5"><div class="category"><h2 class="category-title">أقراص الطعمية</h2><div id="disk-list"></div></div></div>
+        <div class="page" id="page-6"><div class="category"><h2 class="category-title">سفره الواحة (أطباق)</h2><div id="sofra1-list"></div></div></div>
+        <div class="page" id="page-7"><div class="category"><h2 class="category-title">سفره الواحة (إضافات)</h2><div id="sofra2-list"></div></div></div>
+        <div class="page" id="page-8"><div class="category"><h2 class="category-title">ركن العلب (فول)</h2><div id="elba1-list"></div></div></div>
+        <div class="page" id="page-9"><div class="category"><h2 class="category-title">ركن العلب (إضافات)</h2><div id="elba2-list"></div></div></div>
         <div class="page" id="page-10">
             <div class="category"><h2 class="category-title">السلطات والمشروبات</h2><div id="salads-list"></div></div>
-            
             <div class="notes">
                 <p>جميع السندوتشات (بلدي - شامي - فينو)</p>
                 <p>إضافة سلطة بلدي أو طرنشات على السندوتش يتم إضافة 3 ج</p>
@@ -164,10 +150,8 @@
                 <p class="instapay">يوجد انستا باي وكاش علي (01154188441)</p>
             </div>
         </div>
-
     </div>
 
-    <!-- السلة العائمة والتقليب -->
     <div class="floating-cart" id="floatingCart" onclick="openCart()">
         <h3>السلة (<span id="cartCount">0</span>)</h3>
         <span>تأكيد الطلب ➔</span>
@@ -179,7 +163,6 @@
         <button onclick="prevPage()" id="prevBtn">السابق</button>
     </div>
 
-    <!-- نافذة تأكيد الطلب -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
             <div class="cart-header">
@@ -189,7 +172,6 @@
             
             <div class="cart-items-list" id="cartItemsList"></div>
             
-            <!-- الفاتورة للعميل فقط -->
             <div class="invoice-box">
                 <div class="invoice-row"><span>سعر الطلبات:</span><span id="subTotal">0 ج</span></div>
                 <div class="invoice-row" id="deliveryRow"><span>خدمة التوصيل:</span><span id="deliveryFeeText">15 ج</span></div>
@@ -218,7 +200,6 @@
         </div>
     </div>
 
-    <!-- البرمجة والبيانات -->
     <script>
         const menuData = {
             "foul-list": [
@@ -303,10 +284,8 @@
             ]
         };
 
-        // القوائم اللي محتاجة اختيار العيش (السندوتشات بس)
         const sandwichCategories = ['foul-list', 'batates-list', 'ta3meya-list', 'omelet-list', 'motanaw3-list'];
 
-        // توليد الـ HTML للأصناف
         for (let listId in menuData) {
             let container = document.getElementById(listId);
             if (container) {
@@ -319,7 +298,6 @@
                         optionsHtml = item.sizes.map(s => `<option value="${s.name}|${s.price}">${s.name} - ${s.price} ج</option>`).join('');
                     }
 
-                    // قائمة العيش تظهر للسندوتشات فقط
                     let breadHtml = isSandwich ? `
                         <select id="bread-${item.id}" class="bread-select">
                             <option value="بلدي">بلدي</option>
@@ -328,6 +306,7 @@
                         </select>
                     ` : '';
 
+                    // إضافة زر وخانة الملاحظات المخفية
                     htmlContent += `
                         <div class="item">
                             <div class="item-info">
@@ -336,7 +315,10 @@
                                 <div class="item-options">
                                     ${breadHtml}
                                 </div>
-                                <input type="text" id="note-${item.id}" class="item-note" placeholder="ملاحظات (مثال: بدون طماطم)...">
+                                <button class="add-note-btn" onclick="toggleNote(${item.id})">📝 إضافة ملاحظة</button>
+                                <div class="item-note-container" id="note-container-${item.id}">
+                                    <input type="text" id="note-${item.id}" class="item-note" placeholder="اكتب ملاحظتك (مثال: بدون طماطم)...">
+                                </div>
                             </div>
                             <div class="quantity-control">
                                 <button onclick="handleCart(${item.id}, '${item.name}', ${item.sizes ? 'true' : 'false'}, ${item.price || 0}, 1)">+</button>
@@ -350,7 +332,17 @@
             }
         }
 
-        // --- التحكم والتقليب ---
+        // إظهار/إخفاء خانة الملاحظات
+        function toggleNote(id) {
+            let container = document.getElementById(`note-container-${id}`);
+            if (container.style.display === 'block') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'block';
+                document.getElementById(`note-${id}`).focus();
+            }
+        }
+
         let cart = {};
         let currentPage = 0;
         const totalPages = 10; 
@@ -388,12 +380,10 @@
             }
         });
 
-        // --- نظام السلة الجديد (مع العيش والملاحظات) ---
         function handleCart(id, name, hasSize, basePrice, change) {
             let size = '';
             let price = basePrice;
             
-            // قراءة الحجم لو موجود
             if (hasSize) {
                 let sizeSelect = document.getElementById(`size-${id}`);
                 if (sizeSelect) {
@@ -403,15 +393,12 @@
                 }
             }
 
-            // قراءة نوع العيش لو موجود
             let breadSelect = document.getElementById(`bread-${id}`);
             let bread = breadSelect ? breadSelect.value : '';
 
-            // قراءة الملاحظات
             let noteInput = document.getElementById(`note-${id}`);
             let note = noteInput ? noteInput.value.trim() : '';
 
-            // عمل مفتاح فريد للصنف عشان لو الزبون طلب نفس الساندوتش بس بملاحظات مختلفة يتفصل في السلة
             let key = `${id}_${size}_${bread}_${note}`;
 
             if (!cart[key]) {
@@ -430,7 +417,6 @@
             updateCartUI();
         }
 
-        // تحديث الرقم اللي بيظهر بين الـ (+) و (-)
         function updateItemDisplayQty(id) {
             let total = 0;
             for(let key in cart) {
@@ -486,7 +472,6 @@
             }
         }
 
-        // --- إرسال رسالة الواتساب الاحترافية (للكول سنتر بدون أسعار) ---
         function sendOrder() {
             let name = document.getElementById('custName').value.trim();
             let phone = document.getElementById('custPhone').value.trim();
@@ -498,13 +483,11 @@
                 return;
             }
 
-            // توليد رقم أوردر فريد
             let ticketId = "WA-" + Math.floor(1000 + Math.random() * 9000);
 
             let message = `*طلب جديد #${ticketId}* 🔴\n\n`;
             message += `👤 *العميل:* ${name}\n📱 *الموبايل:* ${phone}\n`;
             
-            // تحديد نوع الطلب في الرسالة
             if (orderType === 'delivery') {
                 message += `🛵 *نوع الطلب:* دليفري\n📍 *العنوان:* ${address}\n\n`;
             } else {
@@ -513,7 +496,6 @@
 
             message += `📋 *الطلبات المطلوبة للتحضير:*\n`;
             
-            // إضافة الأصناف والملاحظات (بدون أسعار)
             for (let key in cart) {
                 message += `• ${cart[key].qty}x ${cart[key].name}\n`;
             }
