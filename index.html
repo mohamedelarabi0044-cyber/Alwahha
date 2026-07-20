@@ -15,7 +15,6 @@
             padding-bottom: 120px; 
         }
         
-        /* واجهة الغلاف الفخمة */
         .cover-page {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             height: 100vh; background: radial-gradient(circle at center, #8a1313 0%, #4a0505 100%);
@@ -58,7 +57,6 @@
         .item-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5px; }
         .size-select, .bread-select { padding: 4px 8px; border-radius: 6px; border: 1px solid #ccc; font-family: 'Cairo'; font-size: 13px; background-color: #f9f9f9; color: #a81c1c; font-weight: bold; outline: none; cursor: pointer; }
         
-        /* تنسيقات زر وخانة الملاحظات المخفية */
         .add-note-btn { background: none; border: none; color: #888; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0; margin-top: 8px; font-family: 'Cairo'; display: flex; align-items: center; width: fit-content; transition: 0.3s; }
         .add-note-btn:hover { color: #a81c1c; }
         .item-note-container { display: none; width: 95%; margin-top: 5px; animation: slideDown 0.3s ease; }
@@ -106,6 +104,10 @@
         .order-type-group { display: flex; gap: 15px; background: #eee; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
         .order-type-group label { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 14px; }
         
+        /* زر اللوكيشن */
+        .gps-btn { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 8px; font-family: 'Cairo'; cursor: pointer; font-weight: bold; color: #333; margin-top: 5px; transition: 0.3s; }
+        .gps-btn.success { background-color: #dcf8c6; border-color: #27ae60; color: #27ae60; }
+        
         .send-whatsapp-btn { background-color: #25D366; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 10px; }
         
         .notes { text-align: center; font-size: 14px; color: #555; padding: 15px; background: #f4f4f4; border-radius: 10px; border: 1px dashed #ccc; }
@@ -127,7 +129,7 @@
     </div>
 
     <div class="container">
-        <!-- الصفحات من 1 لـ 10 -->
+        <!-- الصفحات -->
         <div class="page" id="page-1"><div class="category"><h2 class="category-title">سندوتشات الفول</h2><div id="foul-list"></div></div></div>
         <div class="page" id="page-2"><div class="category"><h2 class="category-title">سندوتشات البطاطس</h2><div id="batates-list"></div></div></div>
         <div class="page" id="page-3"><div class="category"><h2 class="category-title">سندوتشات الطعمية</h2><div id="ta3meya-list"></div></div></div>
@@ -163,6 +165,7 @@
         <button onclick="prevPage()" id="prevBtn">السابق</button>
     </div>
 
+    <!-- نافذة تأكيد الطلب -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
             <div class="cart-header">
@@ -172,9 +175,10 @@
             
             <div class="cart-items-list" id="cartItemsList"></div>
             
+            <!-- الفاتورة للعميل -->
             <div class="invoice-box">
                 <div class="invoice-row"><span>سعر الطلبات:</span><span id="subTotal">0 ج</span></div>
-                <div class="invoice-row" id="deliveryRow"><span>خدمة التوصيل:</span><span id="deliveryFeeText">15 ج</span></div>
+                <div class="invoice-row" id="deliveryRow"><span>خدمة التوصيل:</span><span id="deliveryFeeText">0 ج</span></div>
                 <div class="total-row"><span>الإجمالي النهائي:</span><span id="finalTotal">0 ج</span></div>
             </div>
 
@@ -191,15 +195,43 @@
                 <label>رقم الموبايل:</label>
                 <input type="tel" id="custPhone" class="table-input" placeholder="01xxxxxxxxx" required>
             </div>
-            <div class="input-group">
-                <label id="addressLabel">العنوان تفصيلاً:</label>
-                <input type="text" id="custAddress" class="table-input" placeholder="الشارع، العمارة، الدور..." required>
+            
+            <!-- قسم الدليفري المحدث -->
+            <div id="deliveryFields">
+                <div class="input-group">
+                    <label>المنطقة:</label>
+                    <select id="deliveryArea" class="table-input" onchange="updateInvoice()">
+                        <option value="15" data-name="شارع النزهة">شارع النزهة - 15 ج</option>
+                        <option value="20" data-name="مدينة نصر">مدينة نصر - 20 ج</option>
+                        <option value="30" data-name="عباس العقاد">عباس العقاد - 30 ج</option>
+                        <option value="35" data-name="شارع الثورة">شارع الثورة - 35 ج</option>
+                        <option value="40" data-name="مصر الجديدة">مصر الجديدة - 40 ج</option>
+                        <option value="50" data-name="شيراتون">شيراتون - 50 ج</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>العنوان تفصيلاً:</label>
+                    <input type="text" id="custDetailedAddress" class="table-input" placeholder="الشارع، العمارة، الدور، الشقة...">
+                </div>
+                <div class="input-group">
+                    <button type="button" class="gps-btn" id="gpsBtn" onclick="getLocation()">📍 اضف موقعك الحالي (GPS)</button>
+                    <input type="hidden" id="gpsLink" value="">
+                </div>
+            </div>
+
+            <!-- قسم الصالة/تيك أواي -->
+            <div id="dineinFields" style="display:none;">
+                <div class="input-group">
+                    <label>رقم الترابيزة:</label>
+                    <input type="text" id="tableNumber" class="table-input" placeholder="اكتب رقم الترابيزة أو تيك أواي">
+                </div>
             </div>
 
             <button class="send-whatsapp-btn" onclick="sendOrder()">إرسال الطلب عبر واتساب 💬</button>
         </div>
     </div>
 
+    <!-- البرمجة والبيانات -->
     <script>
         const menuData = {
             "foul-list": [
@@ -306,7 +338,6 @@
                         </select>
                     ` : '';
 
-                    // إضافة زر وخانة الملاحظات المخفية
                     htmlContent += `
                         <div class="item">
                             <div class="item-info">
@@ -332,7 +363,6 @@
             }
         }
 
-        // إظهار/إخفاء خانة الملاحظات
         function toggleNote(id) {
             let container = document.getElementById(`note-container-${id}`);
             if (container.style.display === 'block') {
@@ -346,7 +376,6 @@
         let cart = {};
         let currentPage = 0;
         const totalPages = 10; 
-        const DELIVERY_FEE = 15; 
         let currentSubTotal = 0;
 
         function updateUI() {
@@ -454,48 +483,97 @@
 
         function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
 
-        function updateInvoice() {
-            let orderType = document.querySelector('input[name="orderType"]:checked').value;
-            let deliveryRow = document.getElementById('deliveryRow');
-            document.getElementById('subTotal').innerText = currentSubTotal + ' ج';
+        // تحديد موقع الزبون بـ GPS
+        function getLocation() {
+            let gpsBtn = document.getElementById('gpsBtn');
+            gpsBtn.innerText = "⏳ جاري تحديد الموقع...";
             
-            if (orderType === 'delivery') {
-                deliveryRow.style.display = 'flex';
-                document.getElementById('finalTotal').innerText = (currentSubTotal + DELIVERY_FEE) + ' ج';
-                document.getElementById('addressLabel').innerText = 'العنوان تفصيلاً:';
-                document.getElementById('custAddress').placeholder = 'الشارع، العمارة، الدور...';
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    let lat = position.coords.latitude;
+                    let lon = position.coords.longitude;
+                    document.getElementById('gpsLink').value = `https://www.google.com/maps?q=${lat},${lon}`;
+                    gpsBtn.innerText = "✅ تم تحديد الموقع بنجاح";
+                    gpsBtn.classList.add('success');
+                }, function(error) {
+                    gpsBtn.innerText = "❌ فشل التحديد (تأكد من تفعيل الـ GPS)";
+                    setTimeout(() => { gpsBtn.innerText = "📍 اضف موقعك الحالي (GPS)"; }, 3000);
+                });
             } else {
-                deliveryRow.style.display = 'none';
-                document.getElementById('finalTotal').innerText = currentSubTotal + ' ج';
-                document.getElementById('addressLabel').innerText = 'رقم الترابيزة:';
-                document.getElementById('custAddress').placeholder = 'اكتب رقم الترابيزة أو تيك أواي';
+                alert("متصفحك لا يدعم تحديد الموقع.");
+                gpsBtn.innerText = "📍 اضف موقعك الحالي (GPS)";
             }
         }
 
+        // تحديث الفاتورة بناءً على اختيار المنطقة
+        function updateInvoice() {
+            let orderType = document.querySelector('input[name="orderType"]:checked').value;
+            let deliveryFields = document.getElementById('deliveryFields');
+            let dineinFields = document.getElementById('dineinFields');
+            let deliveryRow = document.getElementById('deliveryRow');
+            
+            document.getElementById('subTotal').innerText = currentSubTotal + ' ج';
+            
+            if (orderType === 'delivery') {
+                deliveryFields.style.display = 'block';
+                dineinFields.style.display = 'none';
+                deliveryRow.style.display = 'flex';
+                
+                let areaSelect = document.getElementById('deliveryArea');
+                let deliveryFee = parseFloat(areaSelect.value);
+                
+                document.getElementById('deliveryFeeText').innerText = deliveryFee + ' ج';
+                document.getElementById('finalTotal').innerText = (currentSubTotal + deliveryFee) + ' ج';
+            } else {
+                deliveryFields.style.display = 'none';
+                dineinFields.style.display = 'block';
+                deliveryRow.style.display = 'none';
+                document.getElementById('finalTotal').innerText = currentSubTotal + ' ج';
+            }
+        }
+
+        // إرسال رسالة الواتساب بدون أسعار
         function sendOrder() {
             let name = document.getElementById('custName').value.trim();
             let phone = document.getElementById('custPhone').value.trim();
-            let address = document.getElementById('custAddress').value.trim();
             let orderType = document.querySelector('input[name="orderType"]:checked').value;
 
-            if (name === '' || phone === '' || address === '') {
-                alert('برجاء استكمال البيانات (الاسم، الموبايل، العنوان/الترابيزة)!');
+            if (name === '' || phone === '') {
+                alert('برجاء كتابة الاسم ورقم الموبايل!');
                 return;
             }
 
             let ticketId = "WA-" + Math.floor(1000 + Math.random() * 9000);
-
             let message = `*طلب جديد #${ticketId}* 🔴\n\n`;
             message += `👤 *العميل:* ${name}\n📱 *الموبايل:* ${phone}\n`;
             
             if (orderType === 'delivery') {
-                message += `🛵 *نوع الطلب:* دليفري\n📍 *العنوان:* ${address}\n\n`;
+                let areaSelect = document.getElementById('deliveryArea');
+                let areaName = areaSelect.options[areaSelect.selectedIndex].getAttribute('data-name');
+                let detailedAddress = document.getElementById('custDetailedAddress').value.trim();
+                let gpsLink = document.getElementById('gpsLink').value;
+
+                if (detailedAddress === '') {
+                    alert('برجاء كتابة العنوان تفصيلاً!');
+                    return;
+                }
+
+                message += `🛵 *نوع الطلب:* دليفري\n📍 *المنطقة:* ${areaName}\n🏠 *العنوان تفصيلاً:* ${detailedAddress}\n`;
+                if (gpsLink) {
+                    message += `🗺️ *اللوكيشن (GPS):* ${gpsLink}\n\n`;
+                } else {
+                    message += `\n`;
+                }
             } else {
-                message += `🍽️ *نوع الطلب:* صالة / تيك أواي\n📍 *رقم الترابيزة:* ${address}\n\n`;
+                let tableNum = document.getElementById('tableNumber').value.trim();
+                if (tableNum === '') {
+                    alert('برجاء كتابة رقم الترابيزة!');
+                    return;
+                }
+                message += `🍽️ *نوع الطلب:* صالة / تيك أواي\n📍 *رقم الترابيزة:* ${tableNum}\n\n`;
             }
 
             message += `📋 *الطلبات المطلوبة للتحضير:*\n`;
-            
             for (let key in cart) {
                 message += `• ${cart[key].qty}x ${cart[key].name}\n`;
             }
