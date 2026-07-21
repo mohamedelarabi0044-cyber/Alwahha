@@ -64,10 +64,13 @@
         .item-note { width: 100%; padding: 6px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Cairo'; font-size: 13px; outline: none; transition: 0.3s; box-sizing: border-box; }
         .item-note:focus { border-color: #a81c1c; box-shadow: 0 0 5px rgba(168, 28, 28, 0.2); }
 
-        .quantity-control { display: flex; align-items: center; gap: 8px; margin-right: 10px; margin-top: 5px; }
-        .quantity-control button { background-color: #a81c1c; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
-        .quantity-control button:active { transform: scale(0.9); }
+        /* تعديلات أزرار التحكم والإضافة */
+        .quantity-control { display: flex; align-items: center; gap: 8px; margin-right: 10px; margin-top: 5px; flex-wrap: wrap; justify-content: flex-end;}
+        .quantity-control button.qty-btn { background-color: #a81c1c; color: white; border: none; width: 30px; height: 30px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .quantity-control button.qty-btn:active { transform: scale(0.9); }
         .quantity-control span { font-weight: bold; font-size: 16px; width: 20px; text-align: center; }
+        
+        .confirm-add-btn { display: none; background-color: #27ae60; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-family: 'Cairo'; font-weight: bold; font-size: 13px; cursor: pointer; animation: fadeIn 0.3s; }
 
         .pagination {
             position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 10px 20px;
@@ -104,7 +107,6 @@
         .order-type-group { display: flex; gap: 15px; background: #eee; padding: 10px; border-radius: 8px; margin-bottom: 15px; }
         .order-type-group label { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; font-size: 14px; }
         
-        /* زر اللوكيشن */
         .gps-btn { background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 8px; font-family: 'Cairo'; cursor: pointer; font-weight: bold; color: #333; margin-top: 5px; transition: 0.3s; }
         .gps-btn.success { background-color: #dcf8c6; border-color: #27ae60; color: #27ae60; }
         
@@ -112,9 +114,20 @@
         
         .notes { text-align: center; font-size: 14px; color: #555; padding: 15px; background: #f4f4f4; border-radius: 10px; border: 1px dashed #ccc; }
         .notes p { margin: 5px 0; font-weight: bold; }
+
+        /* رسالة الإضافة الناجحة (Toast) */
+        .toast-msg {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8); color: white; padding: 15px 30px;
+            border-radius: 30px; font-family: 'Cairo'; font-weight: bold; font-size: 16px;
+            z-index: 9999; display: none; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
+
+    <!-- رسالة التأكيد -->
+    <div id="toastMsg" class="toast-msg">تمت الإضافة للسلة ✅</div>
 
     <div class="page cover-page active" id="page-0">
         <div class="cover-content">
@@ -129,7 +142,6 @@
     </div>
 
     <div class="container">
-        <!-- الصفحات -->
         <div class="page" id="page-1"><div class="category"><h2 class="category-title">سندوتشات الفول</h2><div id="foul-list"></div></div></div>
         <div class="page" id="page-2"><div class="category"><h2 class="category-title">سندوتشات البطاطس</h2><div id="batates-list"></div></div></div>
         <div class="page" id="page-3"><div class="category"><h2 class="category-title">سندوتشات الطعمية</h2><div id="ta3meya-list"></div></div></div>
@@ -165,7 +177,6 @@
         <button onclick="prevPage()" id="prevBtn">السابق</button>
     </div>
 
-    <!-- نافذة تأكيد الطلب -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
             <div class="cart-header">
@@ -175,7 +186,6 @@
             
             <div class="cart-items-list" id="cartItemsList"></div>
             
-            <!-- الفاتورة للعميل -->
             <div class="invoice-box">
                 <div class="invoice-row"><span>سعر الطلبات:</span><span id="subTotal">0 ج</span></div>
                 <div class="invoice-row" id="deliveryRow"><span>خدمة التوصيل:</span><span id="deliveryFeeText">0 ج</span></div>
@@ -196,7 +206,6 @@
                 <input type="tel" id="custPhone" class="table-input" placeholder="01xxxxxxxxx" required>
             </div>
             
-            <!-- قسم الدليفري المحدث -->
             <div id="deliveryFields">
                 <div class="input-group">
                     <label>المنطقة:</label>
@@ -219,7 +228,6 @@
                 </div>
             </div>
 
-            <!-- قسم الصالة/تيك أواي -->
             <div id="dineinFields" style="display:none;">
                 <div class="input-group">
                     <label>رقم الترابيزة:</label>
@@ -231,7 +239,6 @@
         </div>
     </div>
 
-    <!-- البرمجة والبيانات -->
     <script>
         const menuData = {
             "foul-list": [
@@ -253,6 +260,7 @@
             "ta3meya-list": [
                 {id: 37, name: "طعمية عادي", price: 15}, {id: 38, name: "طعمية كفتة", price: 15}, {id: 39, name: "طعمية محشية", price: 18},
                 {id: 40, name: "طعمية بالبيض", price: 22}, {id: 41, name: "طعمية ع باذنجان", price: 20}, {id: 42, name: "طعمية ع مسقعة", price: 20},
+                {id: 420, name: "فول ع مسقعة", price: 20},
                 {id: 43, name: "طعمية ع بابا غنوج", price: 20}, {id: 44, name: "طعمية ع بطاطس", price: 24}, {id: 45, name: "طعمية بالبسطرمة", price: 30},
                 {id: 46, name: "طعمية كيري", price: 25}, {id: 47, name: "طعمية ع أمليت", price: 30}, {id: 48, name: "طعمية دوبل", price: 18}, {id: 49, name: "طعمية عين كتكوت", price: 20}
             ],
@@ -338,6 +346,7 @@
                         </select>
                     ` : '';
 
+                    // العداد المؤقت وزرار "إضافة"
                     htmlContent += `
                         <div class="item">
                             <div class="item-info">
@@ -352,9 +361,10 @@
                                 </div>
                             </div>
                             <div class="quantity-control">
-                                <button onclick="handleCart(${item.id}, '${item.name}', ${item.sizes ? 'true' : 'false'}, ${item.price || 0}, 1)">+</button>
-                                <span id="qty-${item.id}">0</span>
-                                <button onclick="handleCart(${item.id}, '${item.name}', ${item.sizes ? 'true' : 'false'}, ${item.price || 0}, -1)">-</button>
+                                <button class="qty-btn" onclick="handleTempQty(${item.id}, 1)">+</button>
+                                <span id="temp-qty-${item.id}">0</span>
+                                <button class="qty-btn" onclick="handleTempQty(${item.id}, -1)">-</button>
+                                <button id="add-btn-${item.id}" class="confirm-add-btn" onclick="confirmAdd(${item.id}, '${item.name}', ${item.sizes ? 'true' : 'false'}, ${item.price || 0})">إضافة</button>
                             </div>
                         </div>
                     `;
@@ -409,7 +419,30 @@
             }
         });
 
-        function handleCart(id, name, hasSize, basePrice, change) {
+        // --- نظام العداد المؤقت والإضافة ---
+        function handleTempQty(id, change) {
+            let qtySpan = document.getElementById(`temp-qty-${id}`);
+            let currentQty = parseInt(qtySpan.innerText) || 0;
+            let newQty = currentQty + change;
+            
+            if (newQty < 0) newQty = 0;
+            qtySpan.innerText = newQty;
+
+            // إظهار أو إخفاء زرار الإضافة
+            let addBtn = document.getElementById(`add-btn-${id}`);
+            if (newQty > 0) {
+                addBtn.style.display = 'block';
+            } else {
+                addBtn.style.display = 'none';
+            }
+        }
+
+        function confirmAdd(id, name, hasSize, basePrice) {
+            let qtySpan = document.getElementById(`temp-qty-${id}`);
+            let qty = parseInt(qtySpan.innerText) || 0;
+            
+            if (qty <= 0) return;
+
             let size = '';
             let price = basePrice;
             
@@ -439,19 +472,23 @@
                 cart[key] = { id: id, baseId: id, name: fullName, price: price, qty: 0 };
             }
 
-            cart[key].qty += change;
-            if (cart[key].qty <= 0) delete cart[key];
+            cart[key].qty += qty;
 
-            updateItemDisplayQty(id);
+            // تصفير العداد المؤقت عشان العميل يطلب صنف تاني
+            qtySpan.innerText = '0';
+            document.getElementById(`add-btn-${id}`).style.display = 'none';
+            
+            if(noteInput) noteInput.value = ''; // تفريغ خانة الملاحظات بعد الإضافة
+
             updateCartUI();
+            showToast("تمت الإضافة للسلة ✅");
         }
 
-        function updateItemDisplayQty(id) {
-            let total = 0;
-            for(let key in cart) {
-                if(cart[key].baseId === id) total += cart[key].qty;
-            }
-            document.getElementById(`qty-${id}`).innerText = total;
+        function showToast(msg) {
+            let toast = document.getElementById('toastMsg');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 1000);
         }
 
         function updateCartUI() {
@@ -483,7 +520,6 @@
 
         function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
 
-        // تحديد موقع الزبون بـ GPS
         function getLocation() {
             let gpsBtn = document.getElementById('gpsBtn');
             gpsBtn.innerText = "⏳ جاري تحديد الموقع...";
@@ -505,7 +541,6 @@
             }
         }
 
-        // تحديث الفاتورة بناءً على اختيار المنطقة
         function updateInvoice() {
             let orderType = document.querySelector('input[name="orderType"]:checked').value;
             let deliveryFields = document.getElementById('deliveryFields');
@@ -532,7 +567,6 @@
             }
         }
 
-        // إرسال رسالة الواتساب بدون أسعار
         function sendOrder() {
             let name = document.getElementById('custName').value.trim();
             let phone = document.getElementById('custPhone').value.trim();
@@ -581,7 +615,7 @@
             message += `\n------------------\n`;
             message += `✅ *رقم الطلب للمتابعة:* ${ticketId}`;
 
-            let whatsappNumber = "201013606635"; 
+            let whatsappNumber = "201154188441"; 
             let encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
