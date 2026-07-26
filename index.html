@@ -42,7 +42,7 @@
             text-decoration: none; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-        /* شريط الأقسام (Tabs) */
+        /* شريط الأقسام */
         .category-nav {
             display: flex; overflow-x: auto; background: var(--white);
             padding: 12px 15px; gap: 10px; position: sticky; top: 0; z-index: 100;
@@ -87,8 +87,8 @@
         }
         .add-btn:active { transform: scale(0.9); }
 
-        /* نافذة اختيار العيش */
-        .bread-chips { display: flex; gap: 10px; margin-bottom: 10px; }
+        /* نافذة اختيار العيش والكمية */
+        .bread-chips { display: flex; gap: 10px; margin-bottom: 20px; }
         .bread-chips input { display: none; }
         .bread-chips label {
             flex: 1; text-align: center; background: var(--light-bg); border: 2px solid #eee;
@@ -98,15 +98,31 @@
         .bread-chips input:checked + label {
             background: var(--main-red); color: var(--white); border-color: var(--main-red);
         }
+
+        /* تصميم عداد الكمية جوه المودال */
+        .modal-qty-container {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #f1f2f6; padding: 10px 15px; border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        .modal-qty-title { font-weight: bold; color: var(--text-dark); font-size: 16px; margin: 0; }
+        .modal-qty-controls { display: flex; align-items: center; gap: 15px; }
+        .modal-qty-btn {
+            background-color: var(--white); border: 1px solid #ddd; width: 35px; height: 35px;
+            border-radius: 8px; font-size: 20px; font-weight: bold; cursor: pointer;
+            color: var(--text-dark); display: flex; justify-content: center; align-items: center; transition: 0.2s;
+        }
+        .modal-qty-btn:active { background-color: var(--main-red); color: var(--white); border-color: var(--main-red); }
+        .modal-qty-display { font-size: 18px; font-weight: 900; color: var(--main-red); width: 20px; text-align: center;}
         
         .confirm-add-btn {
             width: 100%; background-color: var(--main-red); color: var(--white); border: none;
             padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold;
-            margin-top: 15px; cursor: pointer; display: flex; justify-content: center;
+            margin-top: 5px; cursor: pointer; display: flex; justify-content: center;
             align-items: center; gap: 10px; font-family: inherit; box-shadow: 0 4px 10px rgba(211,47,47,0.3);
         }
 
-        /* السلة العائمة والمودال */
+        /* السلة العائمة والمودال الأساسي */
         .floating-cart {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--dark-red); color: var(--white); padding: 12px 30px;
@@ -158,7 +174,7 @@
         <span class="cart-count" id="cart-counter">0</span>
     </button>
 
-    <!-- نافذة اختيار العيش -->
+    <!-- نافذة اختيار العيش والكمية -->
     <div id="options-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -166,6 +182,7 @@
                 <span class="close-btn" onclick="closeOptions()">&times;</span>
             </div>
             
+            <!-- اختيار العيش -->
             <div id="bread-section">
                 <h4 style="margin-top:0; margin-bottom:12px; color:var(--text-dark);">اختار نوع العيش:</h4>
                 <div class="bread-chips">
@@ -177,6 +194,16 @@
                     
                     <input type="radio" name="bread" id="b-fino" value="فينو">
                     <label for="b-fino">فينو</label>
+                </div>
+            </div>
+
+            <!-- اختيار الكمية -->
+            <div class="modal-qty-container">
+                <h4 class="modal-qty-title">الكمية:</h4>
+                <div class="modal-qty-controls">
+                    <button class="modal-qty-btn" onclick="changeModalQty(1)">+</button>
+                    <span class="modal-qty-display" id="modal-qty-display">1</span>
+                    <button class="modal-qty-btn" onclick="changeModalQty(-1)">-</button>
                 </div>
             </div>
             
@@ -205,10 +232,11 @@
     </div>
 
     <script>
-        // الأقسام اللي محتاجة اختيار عيش (سندوتشات بس)
+        // الأقسام اللي محتاجة اختيار عيش
         const categoriesWithBread = ['foul', 'falafel', 'fries', 'omelette', 'mix'];
         
         let selectedItemForAdd = null; 
+        let currentModalQty = 1; // متغير لحفظ الكمية المطلوبة في المودال
         let cart = [];
         const restaurantWhatsApp = "201154188441"; 
 
@@ -368,10 +396,14 @@
             `;
         }
 
+        // فتح نافذة الخيارات
         function openOptions(name, price, categoryId) {
             selectedItemForAdd = { name, price };
+            currentModalQty = 1; // تصفير الكمية لـ 1 مع كل فتحة جديدة
+            
             document.getElementById('opt-title').innerText = name;
-            document.getElementById('opt-price').innerText = price;
+            document.getElementById('modal-qty-display').innerText = currentModalQty;
+            updateModalPriceDisplay();
 
             // لو القسم من ضمن السندوتشات نظهر العيش، لو لأ نخفيه
             if (categoriesWithBread.includes(categoryId)) {
@@ -387,10 +419,26 @@
             document.getElementById('options-modal').style.display = 'none';
         }
 
+        // تغيير الكمية جوه نافذة الخيارات
+        function changeModalQty(change) {
+            if (currentModalQty + change >= 1) {
+                currentModalQty += change;
+                document.getElementById('modal-qty-display').innerText = currentModalQty;
+                updateModalPriceDisplay();
+            }
+        }
+
+        // تحديث السعر الإجمالي في زرار الإضافة
+        function updateModalPriceDisplay() {
+            let total = selectedItemForAdd.price * currentModalQty;
+            document.getElementById('opt-price').innerText = total;
+        }
+
         function confirmAdd() {
             let finalName = selectedItemForAdd.name;
             const price = selectedItemForAdd.price;
 
+            // لو العيش ظاهر، نقرا القيمة ونزودها على الاسم
             if (document.getElementById('bread-section').style.display === 'block') {
                 const selectedBread = document.querySelector('input[name="bread"]:checked').value;
                 finalName += ` (عيش ${selectedBread})`;
@@ -398,14 +446,17 @@
 
             let existingItem = cart.find(item => item.name === finalName);
             if (existingItem) {
-                existingItem.qty += 1;
+                // تزويد الكمية بالرقم اللي الزبون اختاره
+                existingItem.qty += currentModalQty; 
             } else {
-                cart.push({ name: finalName, price: price, qty: 1 });
+                // إضافة الصنف الجديد بالكمية اللي اختارها
+                cart.push({ name: finalName, price: price, qty: currentModalQty });
             }
             
             updateCartUI();
             closeOptions();
             
+            // أنيميشن صغير للسلة
             const cartBtn = document.querySelector('.floating-cart');
             cartBtn.style.transform = 'translateX(-50%) scale(1.1)';
             setTimeout(() => { cartBtn.style.transform = 'translateX(-50%) scale(1)'; }, 200);
