@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منيو المطعم</title>
     <style>
-        /* التنسيقات (CSS) - تقدر تعدل الألوان براحتك */
+        /* التصميم: أحمر وأبيض */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #ffffff; /* خلفية بيضاء */
             margin: 0;
             padding: 0;
             color: #333;
         }
         header {
-            background-color: #2c3e50;
+            background-color: #d32f2f; /* لون أحمر */
             color: white;
             text-align: center;
             padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .container {
             max-width: 600px;
@@ -25,46 +26,55 @@
             padding: 0 15px;
         }
         .menu-item {
-            background: white;
+            background: #fff;
+            border: 2px solid #d32f2f; /* إطار أحمر */
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 4px rgba(211, 47, 47, 0.1);
         }
         .item-info h3 {
             margin: 0 0 5px 0;
-            color: #d35400;
+            color: #d32f2f;
         }
         .item-info p {
             margin: 0;
-            color: #7f8c8d;
+            color: #555;
             font-size: 14px;
         }
+        .item-info strong {
+            display: inline-block;
+            margin-top: 5px;
+            color: #b71c1c;
+        }
         button {
-            background-color: #27ae60;
+            background-color: #d32f2f;
             color: white;
             border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.3s;
         }
         button:hover {
-            background-color: #219653;
+            background-color: #b71c1c;
         }
         .cart-section {
             background: #fff;
             padding: 20px;
+            border: 2px solid #d32f2f;
             border-radius: 8px;
             margin-top: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.1);
         }
         .cart-section h2 {
             margin-top: 0;
-            border-bottom: 2px solid #eee;
+            color: #d32f2f;
+            border-bottom: 2px solid #ffebee;
             padding-bottom: 10px;
         }
         .form-group {
@@ -74,13 +84,18 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #d32f2f;
         }
         .form-group input, .form-group select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 1px solid #ffcdd2;
             border-radius: 5px;
             box-sizing: border-box;
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #d32f2f;
         }
         .cart-items-list {
             margin-bottom: 20px;
@@ -88,15 +103,29 @@
         .cart-item-row {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px dashed #ccc;
-            padding: 5px 0;
+            border-bottom: 1px dashed #ffcdd2;
+            padding: 8px 0;
+        }
+        .total-row {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+            text-align: left;
+            margin-top: 15px;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
         }
         .checkout-btn {
             width: 100%;
-            background-color: #128C7E; /* لون الواتساب */
+            background-color: #25D366; /* لون الواتساب الأخضر عشان يكون واضح */
             font-size: 16px;
             padding: 15px;
-            margin-top: 10px;
+            margin-top: 15px;
+            color: white;
+        }
+        .checkout-btn:hover {
+            background-color: #128C7E;
         }
     </style>
 </head>
@@ -110,7 +139,6 @@
     <div class="container">
         <!-- قسم المنيو -->
         <div id="menu-container">
-            <!-- صنف 1 -->
             <div class="menu-item">
                 <div class="item-info">
                     <h3>فول الواحة</h3>
@@ -120,7 +148,6 @@
                 <button onclick="addToCart('فول الواحة', 'عيش بلدي', 15)">إضافة للسلة</button>
             </div>
 
-            <!-- صنف 2 -->
             <div class="menu-item">
                 <div class="item-info">
                     <h3>فول الواحة</h3>
@@ -130,7 +157,6 @@
                 <button onclick="addToCart('فول الواحة', 'عيش شامي', 15)">إضافة للسلة</button>
             </div>
 
-            <!-- صنف 3 -->
             <div class="menu-item">
                 <div class="item-info">
                     <h3>فول ع باذنجان</h3>
@@ -141,52 +167,52 @@
             </div>
         </div>
 
-        <!-- قسم سلة المشتريات وبيانات العميل -->
+        <!-- قسم سلة المشتريات -->
         <div class="cart-section">
             <h2>🛒 سلة المشتريات</h2>
             <div id="cart-items-container" class="cart-items-list">
                 <p style="color: #999;">السلة فارغة حالياً...</p>
             </div>
 
-            <hr style="border: 1px solid #eee; margin: 20px 0;">
+            <hr style="border: 1px solid #ffebee; margin: 20px 0;">
 
             <h2>📋 بيانات الطلب</h2>
+            
             <div class="form-group">
-                <label>اسم العميل:</label>
-                <input type="text" id="cust-name" placeholder="مثال: سعد">
-            </div>
-            <div class="form-group">
-                <label>رقم الموبايل:</label>
-                <input type="tel" id="cust-phone" placeholder="مثال: 01211294670">
-            </div>
-            <div class="form-group">
-                <label>نوع الطلب:</label>
-                <select id="order-type">
-                    <option value="دليفري">دليفري</option>
-                    <option value="تيك أواي">تيك أواي</option>
-                    <option value="صالة">صالة</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>المنطقة:</label>
-                <input type="text" id="cust-area" placeholder="مثال: عباس العقاد">
-            </div>
-            <div class="form-group">
-                <label>العنوان تفصيلاً:</label>
-                <input type="text" id="cust-address" placeholder="مثال: 11 ش النزهه">
+                <label>الاسم:</label>
+                <input type="text" id="cust-name" placeholder="اكتب اسمك هنا...">
             </div>
             
-            <button class="checkout-btn" onclick="checkout()">✅ تأكيد وإرسال الطلب عبر واتساب</button>
+            <div class="form-group">
+                <label>رقم الموبايل:</label>
+                <input type="tel" id="cust-phone" placeholder="مثال: 01xxxxxxxxx">
+            </div>
+
+            <!-- خانة المنطقة (بتحدد سعر التوصيل) -->
+            <div class="form-group">
+                <label>المنطقة (العنوان):</label>
+                <select id="cust-area" onchange="updateCartUI()">
+                    <option value="غير محدد" data-fee="0" disabled selected>اختر المنطقة...</option>
+                    <option value="المنطقة الأولى" data-fee="10">المنطقة الأولى (توصيل 10 ج.م)</option>
+                    <option value="المنطقة الثانية" data-fee="15">المنطقة الثانية (توصيل 15 ج.م)</option>
+                    <option value="المنطقة الثالثة" data-fee="20">المنطقة الثالثة (توصيل 20 ج.م)</option>
+                </select>
+            </div>
+
+            <!-- خانة العنوان تفصيلاً -->
+            <div class="form-group">
+                <label>العنوان تفصيلاً:</label>
+                <input type="text" id="cust-address-details" placeholder="الشارع، رقم العمارة، الدور، الشقة...">
+            </div>
+            
+            <button class="checkout-btn" onclick="checkout()">✅ إرسال الطلب عبر واتساب</button>
         </div>
     </div>
 
     <script>
-        // مصفوفة لتخزين الطلبات
         let cart = [];
 
-        // دالة لإضافة صنف للسلة
         function addToCart(name, details, price) {
-            // التحقق إذا كان الصنف موجود مسبقاً لزيادة الكمية
             let existingItem = cart.find(item => item.name === name && item.details === details);
             if (existingItem) {
                 existingItem.quantity++;
@@ -196,7 +222,6 @@
             updateCartUI();
         }
 
-        // دالة لتحديث شكل السلة في الصفحة
         function updateCartUI() {
             let cartContainer = document.getElementById('cart-items-container');
             if (cart.length === 0) {
@@ -205,10 +230,10 @@
             }
 
             cartContainer.innerHTML = '';
-            let total = 0;
+            let itemsTotal = 0;
             
             cart.forEach(item => {
-                total += (item.price * item.quantity);
+                itemsTotal += (item.price * item.quantity);
                 cartContainer.innerHTML += `
                     <div class="cart-item-row">
                         <span>${item.quantity}x ${item.name} [${item.details}]</span>
@@ -216,45 +241,58 @@
                     </div>
                 `;
             });
+
+            // حساب خدمة التوصيل
+            let areaSelect = document.getElementById('cust-area');
+            let deliveryFee = parseInt(areaSelect.options[areaSelect.selectedIndex].getAttribute('data-fee')) || 0;
+            
+            let finalTotal = itemsTotal + deliveryFee;
+
+            if(deliveryFee > 0) {
+                cartContainer.innerHTML += `
+                    <div class="cart-item-row" style="color: #d32f2f;">
+                        <span>خدمة التوصيل</span>
+                        <span>${deliveryFee} ج.م</span>
+                    </div>
+                `;
+            }
             
             cartContainer.innerHTML += `
-                <div style="text-align: left; margin-top: 10px; font-weight: bold; color: #d35400;">
-                    الإجمالي: ${total} ج.م
+                <div class="total-row">
+                    الإجمالي المطلوب: ${finalTotal} ج.م
                 </div>
             `;
         }
 
-        // دالة إرسال الطلب للواتساب
         function checkout() {
             if (cart.length === 0) {
                 alert("السلة فارغة! برجاء اختيار بعض الأصناف أولاً.");
                 return;
             }
 
-            // سحب البيانات من الحقول
             let name = document.getElementById('cust-name').value || "غير محدد";
             let phone = document.getElementById('cust-phone').value || "غير محدد";
-            let type = document.getElementById('order-type').value;
-            let area = document.getElementById('cust-area').value || "غير محدد";
-            let address = document.getElementById('cust-address').value || "غير محدد";
+            let areaSelect = document.getElementById('cust-area');
+            let areaName = areaSelect.options[areaSelect.selectedIndex].value;
+            let addressDetails = document.getElementById('cust-address-details').value || "غير محدد";
             
-            // إنشاء رقم طلب عشوائي
-            let orderId = "WA-" + Math.floor(Math.random() * 9000 + 1000);
-            
-            // رابط افتراضي للـ GPS (ممكن يتطور لاحقاً عشان يسحب الـ Location الحقيقي)
-            let gpsLink = "https://maps.google.com/?q=القاهرة"; 
+            if (areaName === "غير محدد") {
+                alert("برجاء اختيار المنطقة أولاً لحساب خدمة التوصيل.");
+                return;
+            }
 
-            // تجهيز قائمة الطلبات
+            let orderId = "WA-" + Math.floor(Math.random() * 9000 + 1000);
+            let gpsLink = "https://maps.google.com/"; 
+
             let itemsList = cart.map(item => 
                 `🔸 ${item.quantity} « ${item.name} [${item.details}]`
             ).join('\n');
 
-            // تجهيز رسالة الواتساب بنفس التنسيق المطلوب
             let whatsappMessage = `👤 العميل: ${name}
 📱 الموبايل: ${phone}
-🛵 نوع الطلب: ${type}
-📍 المنطقة: ${area}
-🏠 العنوان تفصيلاً: ${address}
+🛵 نوع الطلب: دليفري
+📍 المنطقة: ${areaName}
+🏠 العنوان تفصيلاً: ${addressDetails}
 🏞️ اللوكيشن (GPS): ${gpsLink}
 ────────────────
 📋 جدول الطلبات:
@@ -263,14 +301,10 @@ ${itemsList}
 ────────────────
 ✅ رقم الطلب للمتابعة: ${orderId}`;
 
-            // تشفير النص للرابط
             let encodedMessage = encodeURIComponent(whatsappMessage);
-
-            // ⚠️ غير الرقم ده لرقم المطعم بتاعك (مع كود الدولة، 20 لمصر)
-            let restaurantWhatsAppNumber = "201000000000"; 
-
-            // فتح الواتساب
+            let restaurantWhatsAppNumber = "201000000000"; // حط رقم المطعم هنا
             let whatsappUrl = `https://wa.me/${restaurantWhatsAppNumber}?text=${encodedMessage}`;
+            
             window.open(whatsappUrl, '_blank');
         }
     </script>
