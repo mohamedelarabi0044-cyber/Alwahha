@@ -31,18 +31,18 @@
             text-align: center; position: relative;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .hero-content { color: var(--white); }
+        .hero-content { color: var(--white); z-index: 2;}
         .hero-content h1 { font-size: 45px; font-weight: 900; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         .hero-content p { margin: 5px 0 0; font-size: 18px; font-weight: 700; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px;}
         
-        .quick-contact { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
+        .quick-contact { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 3;}
         .contact-icon {
             background: var(--white); color: var(--dark-red); width: 35px; height: 35px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
             text-decoration: none; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-        /* شريط الأقسام */
+        /* شريط الأقسام (Tabs) */
         .category-nav {
             display: flex; overflow-x: auto; background: var(--white);
             padding: 12px 15px; gap: 10px; position: sticky; top: 0; z-index: 100;
@@ -52,15 +52,19 @@
         .category-link {
             background: var(--light-bg); color: var(--text-dark); padding: 8px 16px;
             border-radius: 25px; text-decoration: none; font-weight: 700; font-size: 14px;
-            white-space: nowrap; border: 1px solid #e0e0e0; transition: 0.2s;
+            white-space: nowrap; border: 1px solid #e0e0e0; transition: 0.2s; cursor: pointer;
         }
-        .category-link.active, .category-link:active {
+        .category-link.active {
             background: var(--main-red); color: var(--white); border-color: var(--main-red);
         }
 
+        /* أنيميشن الظهور للأقسام */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+
         /* العناوين والشبكة */
         .section-title {
-            margin: 25px 15px 15px; font-size: 22px; color: var(--dark-red);
+            margin: 20px 15px 15px; font-size: 22px; color: var(--dark-red);
             font-weight: 900; display: flex; align-items: center; gap: 10px;
         }
         .section-title::after {
@@ -69,14 +73,12 @@
 
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
 
-        /* تصميم الكارت بدون صور */
+        /* تصميم الكارت */
         .menu-card {
             background: var(--white); border-radius: 12px; border: 1px solid #f0f0f0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02); padding: 15px;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: 0.2s;
         }
-        .menu-card:active { transform: scale(0.98); border-color: var(--main-red); }
         .card-title { font-size: 15px; font-weight: 800; color: var(--text-dark); margin: 0 0 10px 0; line-height: 1.3;}
         .price-action { display: flex; justify-content: space-between; align-items: center; }
         .price { font-size: 16px; font-weight: 900; color: var(--main-red); }
@@ -84,10 +86,30 @@
             background-color: var(--main-red); color: var(--white); border: none;
             border-radius: 8px; width: 32px; height: 32px; font-size: 18px;
             cursor: pointer; display: flex; justify-content: center; align-items: center;
-            font-weight: bold; box-shadow: 0 2px 4px rgba(211,47,47,0.3);
+            font-weight: bold; box-shadow: 0 2px 4px rgba(211,47,47,0.3); transition: 0.2s;
+        }
+        .add-btn:active { transform: scale(0.9); }
+
+        /* تصميم نافذة اختيار العيش (Options Modal) */
+        .bread-chips { display: flex; gap: 10px; margin-bottom: 10px; }
+        .bread-chips input { display: none; }
+        .bread-chips label {
+            flex: 1; text-align: center; background: var(--light-bg); border: 2px solid #eee;
+            padding: 10px; border-radius: 10px; cursor: pointer; font-weight: bold;
+            color: var(--text-dark); transition: 0.2s;
+        }
+        .bread-chips input:checked + label {
+            background: var(--main-red); color: var(--white); border-color: var(--main-red);
+        }
+        
+        .confirm-add-btn {
+            width: 100%; background-color: var(--main-red); color: var(--white); border: none;
+            padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold;
+            margin-top: 15px; cursor: pointer; display: flex; justify-content: center;
+            align-items: center; gap: 10px; font-family: inherit; box-shadow: 0 4px 10px rgba(211,47,47,0.3);
         }
 
-        /* السلة العائمة والمودال (نفس الاحترافية) */
+        /* السلة العائمة والمودال الأساسي */
         .floating-cart {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--dark-red); color: var(--white); padding: 12px 30px;
@@ -104,11 +126,13 @@
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--light-bg); padding-bottom: 10px; margin-bottom: 15px;}
         .modal-header h2 { margin: 0; font-size: 20px; color: var(--dark-red); font-weight: 900;}
         .close-btn { font-size: 28px; color: #999; cursor: pointer; }
+        
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--light-bg); }
         .cart-item-title { font-weight: 800; font-size: 15px; color: var(--text-dark);}
         .cart-item-price { color: var(--main-red); font-size: 14px; font-weight: bold;}
         .qty-controls { display: flex; align-items: center; gap: 10px; }
         .qty-btn { background-color: var(--light-bg); border: 1px solid #ddd; width: 28px; height: 28px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        
         .total-section { margin-top: 20px; font-size: 18px; font-weight: 900; display: flex; justify-content: space-between; }
         .whatsapp-btn { width: 100%; background-color: #25D366; color: var(--white); border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; margin-top: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; font-family: inherit; }
     </style>
@@ -126,18 +150,48 @@
         </div>
     </div>
 
-    <!-- شريط الأقسام (سيتم توليده برمجياً) -->
+    <!-- شريط الأقسام (تولد برمجياً) -->
     <nav class="category-nav" id="nav-container"></nav>
 
-    <!-- محتوى المنيو (سيتم توليده برمجياً) -->
+    <!-- محتوى المنيو يتغير هنا -->
     <main id="menu-container"></main>
 
-    <!-- السلة -->
+    <!-- السلة العائمة -->
     <button class="floating-cart" onclick="openCart()">
         <i class="fa fa-shopping-cart"></i> طلباتك 
         <span class="cart-count" id="cart-counter">0</span>
     </button>
 
+    <!-- نافذة اختيار العيش والإضافة للسلة -->
+    <div id="options-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="opt-title" style="font-size: 18px;">اسم الصنف</h2>
+                <span class="close-btn" onclick="closeOptions()">&times;</span>
+            </div>
+            
+            <!-- الجزء ده هيختفي لو الصنف مش ساندوتش -->
+            <div id="bread-section">
+                <h4 style="margin-top:0; margin-bottom:12px; color:var(--text-dark);">اختار نوع العيش:</h4>
+                <div class="bread-chips">
+                    <input type="radio" name="bread" id="b-baladi" value="بلدي" checked>
+                    <label for="b-baladi">بلدي</label>
+                    
+                    <input type="radio" name="bread" id="b-shami" value="شامي">
+                    <label for="b-shami">شامي</label>
+                    
+                    <input type="radio" name="bread" id="b-fino" value="فينو">
+                    <label for="b-fino">فينو</label>
+                </div>
+            </div>
+            
+            <button class="confirm-add-btn" onclick="confirmAdd()">
+                إضافة للسلة • <span id="opt-price">0</span> ج.م
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة سلة الطلبات -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -156,102 +210,54 @@
     </div>
 
     <script>
-        // --------------------------------------------------------
-        // قاعدة بيانات المنيو (الـ 10 أركان بالكامل من الصور)
-        // --------------------------------------------------------
+        // الأقسام اللي محتاجة اختيار عيش (سندوتشات فقط)
+        const categoriesWithBread = ['foul', 'falafel', 'fries', 'omelette', 'mix'];
+        
+        let selectedItemForAdd = null; // بيحفظ الصنف اللي الزبون داس عليه
+        let cart = [];
+        const restaurantWhatsApp = "201154188441"; 
+
         const menuData = [
             {
                 id: "foul", title: "سندوتشات الفول",
                 items: [
                     { name: "فول الواحة", price: 15 }, { name: "فول زيت حار", price: 16 },
-                    { name: "فول زيت زيتون", price: 16 }, { name: "فول اسكندراني", price: 16 },
-                    { name: "فول ع طعمية", price: 18 }, { name: "فول ع طعمية محشية", price: 20 },
-                    { name: "فول ع طعمية ع باذنجان", price: 25 }, { name: "فول ع أومليت", price: 30 },
-                    { name: "فول ع باذنجان", price: 18 }, { name: "فول ع بابا غنوج", price: 20 },
-                    { name: "فول بالصلصة", price: 15 }, { name: "فول دبل", price: 18 },
-                    { name: "فول مخصوص", price: 18 }, { name: "فول ع بيض مسلوق", price: 25 }
+                    { name: "فول اسكندراني", price: 16 }, { name: "فول ع طعمية", price: 18 }
                 ]
             },
             {
                 id: "falafel", title: "سندوتشات الطعمية",
                 items: [
-                    { name: "طعمية عادي", price: 15 }, { name: "طعمية كفتة", price: 15 },
-                    { name: "طعمية محشية", price: 18 }, { name: "طعمية بالبيض", price: 22 },
-                    { name: "طعمية ع باذنجان", price: 20 }, { name: "طعمية ع بابا غنوج", price: 20 },
-                    { name: "طعمية ع بطاطس", price: 24 }, { name: "طعمية ع مسقعة", price: 20 },
-                    { name: "طعمية بالبسطرمة", price: 30 }, { name: "طعمية كيري", price: 30 },
-                    { name: "طعمية ع أومليت", price: 30 }, { name: "طعمية دبل", price: 18 }
-                ]
-            },
-            {
-                id: "falafel-discs", title: "أقراص الطعمية",
-                items: [
-                    { name: "قرص طعمية", price: 3 }, { name: "قرص سادة كبير", price: 6 },
-                    { name: "قرص طعمية كفتة", price: 3 }, { name: "قرص طعمية محشية", price: 8 },
-                    { name: "قرص مجة", price: 25 }, { name: "قرص طعمية كيري", price: 25 },
-                    { name: "قرص عين كتكوت", price: 25 }, { name: "قرص طعمية بالبسطرمة", price: 25 }
+                    { name: "طعمية عادي", price: 15 }, { name: "طعمية محشية", price: 18 },
+                    { name: "طعمية بالبيض", price: 22 }, { name: "طعمية كيري", price: 30 }
                 ]
             },
             {
                 id: "fries", title: "سندوتشات البطاطس",
                 items: [
-                    { name: "بطاطس صوابع", price: 22 }, { name: "بطاطس ع جبنة قريش", price: 24 },
-                    { name: "صوابع ع باذنجان", price: 24 }, { name: "صوابع أومليت", price: 30 },
-                    { name: "صوابع أومليت بسطرمة", price: 35 }, { name: "صوابع ع مقلية", price: 40 },
-                    { name: "صوابع بالبيض", price: 25 }, { name: "صوابع كاتشب", price: 20 },
-                    { name: "صوابع بابا غنوج", price: 25 }, { name: "شيبسي", price: 18 },
-                    { name: "شيبسي بالبيض", price: 25 }, { name: "بطاطس بورية", price: 16 },
-                    { name: "بطاطس بورية بالبيض", price: 25 }, { name: "بورية ع جبنة رومي", price: 35 }
+                    { name: "بطاطس صوابع", price: 22 }, { name: "صوابع ع باذنجان", price: 24 },
+                    { name: "شيبسي بالبيض", price: 25 }, { name: "بطاطس بورية", price: 16 }
                 ]
             },
             {
                 id: "omelette", title: "سندوتشات الأومليت",
                 items: [
-                    { name: "بيض مسلوق", price: 16 }, { name: "بيض ع باذنجان", price: 20 },
-                    { name: "بيض مدحرج", price: 18 }, { name: "بيض أومليت", price: 20 },
-                    { name: "أومليت بسطرمة", price: 30 }, { name: "أومليت رومي", price: 30 },
-                    { name: "أومليت سوسيس", price: 25 }, { name: "أومليت خضار", price: 25 },
-                    { name: "أومليت بيتزا", price: 40 }
+                    { name: "بيض مسلوق", price: 16 }, { name: "بيض أومليت", price: 20 },
+                    { name: "أومليت بسطرمة", price: 30 }, { name: "أومليت رومي", price: 30 }
                 ]
             },
             {
                 id: "mix", title: "سندوتشات متنوع",
                 items: [
-                    { name: "جبنة قريش", price: 18 }, { name: "جبنة بالبيض", price: 22 },
-                    { name: "سندوتش باذنجان", price: 15 }, { name: "سندوتش مسقعة", price: 15 },
-                    { name: "سندوتش بابا غنوج", price: 15 }, { name: "سندوتش عجة بلدي", price: 20 },
-                    { name: "سندوتش شكشوكة", price: 15 }, { name: "سندوتش شكشوكة مخصوص", price: 20 },
-                    { name: "ديناميت", price: 35 }, { name: "سندوتش جبنة مقلية", price: 35 }
+                    { name: "جبنة بالبيض", price: 22 }, { name: "سندوتش مسقعة", price: 15 },
+                    { name: "سندوتش بابا غنوج", price: 15 }, { name: "سندوتش عجة بلدي", price: 20 }
                 ]
             },
             {
-                id: "sofra", title: "سفرة الواحة",
+                id: "sofra", title: "سفرة الواحة (أطباق)",
                 items: [
-                    { name: "طبق فول حار/حلو", price: 55 }, { name: "طبق فول اسكندراني", price: 55 },
-                    { name: "طبق طعمية", price: 12 }, { name: "طبق طعمية محشية", price: 15 },
-                    { name: "طبق طعمية كيري", price: 20 }, { name: "طبق بيض", price: 15 },
-                    { name: "طبق بطاطس", price: 25 }, { name: "طبق مسقعة", price: 20 },
-                    { name: "طبق عجة", price: 20 }, { name: "طبق شكشوكة", price: 20 },
-                    { name: "طبق أومليت سادة", price: 40 }, { name: "طبق أومليت بسطرمة", price: 40 },
-                    { name: "طبق مقلية", price: 40 }, { name: "طبق فول زبدة", price: 45 }
-                ]
-            },
-            {
-                id: "boxes", title: "ركن العلب",
-                items: [
-                    { name: "علبة فول سادة كبير", price: 30 }, { name: "علبة فول زيت حار كبير", price: 35 },
-                    { name: "علبة فول اسكندراني كبير", price: 40 }, { name: "علبة فول بالبيض كبير", price: 45 },
-                    { name: "علبة فول بالبسطرمة كبير", price: 50 }, { name: "علبة مسقعة", price: 32 },
-                    { name: "علبة جبنة قريش", price: 35 }, { name: "علبة بورية", price: 35 },
-                    { name: "علبة شكشوكة", price: 35 }, { name: "باكيت بطاطس صوابع", price: 40 }
-                ]
-            },
-            {
-                id: "salads", title: "السلطات والمخللات",
-                items: [
-                    { name: "سلطة بلدي", price: 15 }, { name: "سلطة طحينة", price: 25 },
-                    { name: "طبق باذنجان مخلل", price: 15 }, { name: "بابا غنوج", price: 25 },
-                    { name: "طرشي / مخلل", price: 15 }, { name: "خيار مخلل", price: 10 }
+                    { name: "طبق فول حار/حلو", price: 55 }, { name: "طبق طعمية", price: 12 },
+                    { name: "طبق مسقعة", price: 20 }, { name: "طبق أومليت سادة", price: 40 }
                 ]
             },
             {
@@ -262,68 +268,104 @@
             }
         ];
 
-        // --------------------------------------------------------
-        // دالة بناء المنيو برمجياً (Rendering)
-        // --------------------------------------------------------
-        function renderMenu() {
+        // 1. بناء شريط الأقسام
+        function initMenu() {
             const navContainer = document.getElementById('nav-container');
-            const menuContainer = document.getElementById('menu-container');
-
-            menuData.forEach((section, index) => {
-                // بناء روابط الأقسام
-                navContainer.innerHTML += `<a href="#${section.id}" class="category-link ${index === 0 ? 'active' : ''}">${section.title}</a>`;
-
-                // بناء محتوى القسم
-                let itemsHtml = section.items.map(item => `
-                    <div class="menu-card">
-                        <h3 class="card-title">${item.name}</h3>
-                        <div class="price-action">
-                            <span class="price">${item.price} ج.م</span>
-                            <button class="add-btn" onclick="addToCart('${item.name}', ${item.price})">+</button>
-                        </div>
-                    </div>
-                `).join('');
-
-                menuContainer.innerHTML += `
-                    <section id="${section.id}">
-                        <h2 class="section-title">${section.title}</h2>
-                        <div class="menu-grid">
-                            ${itemsHtml}
-                        </div>
-                    </section>
-                `;
+            let navHtml = '';
+            menuData.forEach((sec, index) => {
+                navHtml += `<button class="category-link ${index === 0 ? 'active' : ''}" onclick="selectCategory('${sec.id}', this)">${sec.title}</button>`;
             });
+            navContainer.innerHTML = navHtml;
+            
+            // نعرض أول قسم كبداية
+            if(menuData.length > 0) {
+                renderCategory(menuData[0].id);
+            }
         }
 
-        // تشغيل البناء أول ما الصفحة تفتح
-        renderMenu();
+        // 2. دالة تغيير القسم (Tabs)
+        function selectCategory(id, btnElement) {
+            // تظبيط اللون في الشريط
+            document.querySelectorAll('.category-link').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            
+            renderCategory(id);
+        }
 
-        // تفعيل لون الزرار في الناف بار عند الضغط
-        document.querySelectorAll('.category-link').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelectorAll('.category-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+        // 3. دالة بناء الكروت للقسم المختار فقط
+        function renderCategory(categoryId) {
+            const section = menuData.find(s => s.id === categoryId);
+            const container = document.getElementById('menu-container');
+            
+            let itemsHtml = section.items.map(item => `
+                <div class="menu-card fade-in">
+                    <h3 class="card-title">${item.name}</h3>
+                    <div class="price-action">
+                        <span class="price">${item.price} ج.م</span>
+                        <button class="add-btn" onclick="openOptions('${item.name}', ${item.price}, '${section.id}')">+</button>
+                    </div>
+                </div>
+            `).join('');
 
-        // --------------------------------------------------------
-        // نظام السلة والواتساب
-        // --------------------------------------------------------
-        let cart = [];
-        const restaurantWhatsApp = "201154188441"; 
+            container.innerHTML = `
+                <section id="${section.id}">
+                    <h2 class="section-title fade-in">${section.title}</h2>
+                    <div class="menu-grid">
+                        ${itemsHtml}
+                    </div>
+                </section>
+            `;
+        }
 
-        function addToCart(name, price) {
-            let existingItem = cart.find(item => item.name === name);
-            if (existingItem) existingItem.qty += 1;
-            else cart.push({ name: name, price: price, qty: 1 });
+        // 4. فتح نافذة الخيارات (العيش)
+        function openOptions(name, price, categoryId) {
+            selectedItemForAdd = { name, price };
+            document.getElementById('opt-title').innerText = name;
+            document.getElementById('opt-price').innerText = price;
+
+            // لو القسم من ضمن السندوتشات نظهر العيش، لو لأ نخفيه
+            if (categoriesWithBread.includes(categoryId)) {
+                document.getElementById('bread-section').style.display = 'block';
+            } else {
+                document.getElementById('bread-section').style.display = 'none';
+            }
+
+            document.getElementById('options-modal').style.display = 'flex';
+        }
+
+        function closeOptions() {
+            document.getElementById('options-modal').style.display = 'none';
+        }
+
+        // 5. تأكيد الإضافة للسلة
+        function confirmAdd() {
+            let finalName = selectedItemForAdd.name;
+            const price = selectedItemForAdd.price;
+
+            // لو العيش ظاهر، نقرا القيمة ونزودها على الاسم
+            if (document.getElementById('bread-section').style.display === 'block') {
+                const selectedBread = document.querySelector('input[name="bread"]:checked').value;
+                finalName += ` (عيش ${selectedBread})`;
+            }
+
+            // إضافة للسلة
+            let existingItem = cart.find(item => item.name === finalName);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name: finalName, price: price, qty: 1 });
+            }
             
             updateCartUI();
+            closeOptions();
             
+            // أنيميشن صغير للسلة
             const cartBtn = document.querySelector('.floating-cart');
             cartBtn.style.transform = 'translateX(-50%) scale(1.1)';
             setTimeout(() => { cartBtn.style.transform = 'translateX(-50%) scale(1)'; }, 200);
         }
 
+        // 6. تحديث وعرض السلة
         function updateCartUI() {
             let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
             document.getElementById('cart-counter').innerText = totalQty;
@@ -365,6 +407,7 @@
 
         function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
 
+        // 7. إرسال الطلب للواتساب
         function sendWhatsAppOrder() {
             if (cart.length === 0) return;
             let message = "*طلب جديد من مطعم الواحة* 🍽️%0A";
@@ -381,6 +424,9 @@
             message += "📍 يرجى إرسال العنوان لتأكيد الطلب.";
             window.open(`https://wa.me/${restaurantWhatsApp}?text=${message}`, '_blank');
         }
+
+        // تشغيل السيستم
+        initMenu();
     </script>
 </body>
 </html>
