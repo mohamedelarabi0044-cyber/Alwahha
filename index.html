@@ -21,9 +21,92 @@
             font-family: 'Cairo', sans-serif;
             background-color: var(--light-bg);
             margin: 0; padding: 0; padding-bottom: 90px;
+            overflow-x: hidden;
         }
 
-        /* البانر العلوي */
+        /* ---------------------------------------------------- */
+        /* أنيميشن شاشة الترحيب (Splash Screen) */
+        /* ---------------------------------------------------- */
+        #splash-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #8e0000, #d32f2f);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: var(--white);
+            transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
+        }
+
+        .splash-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            animation: pulseIcon 1.5s infinite ease-in-out;
+            color: #ffe082;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .splash-title {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 2px;
+            animation: zoomInText 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .splash-subtitle {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .splash-loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid var(--white);
+            border-radius: 50%;
+            margin-top: 30px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* كلاس الاختفاء النعم */
+        #splash-screen.fade-out {
+            opacity: 0;
+            transform: scale(1.08);
+            visibility: hidden;
+        }
+
+        /* keyframes الأنيميشن */
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15) rotate(5deg); }
+        }
+        @keyframes zoomInText {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ---------------------------------------------------- */
+        /* باقى التنسيقات */
+        /* ---------------------------------------------------- */
         .hero-banner {
             width: 100%; height: 200px;
             background: linear-gradient(135deg, var(--dark-red), var(--main-red));
@@ -42,7 +125,6 @@
             text-decoration: none; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-        /* شريط الأقسام */
         .category-nav {
             display: flex; overflow-x: auto; background: var(--white);
             padding: 12px 15px; gap: 10px; position: sticky; top: 0; z-index: 100;
@@ -83,13 +165,12 @@
         }
         .add-btn:active { transform: scale(0.9); }
 
-        /* نافذة اختيار العيش والكمية */
-        .bread-chips { display: flex; gap: 10px; margin-bottom: 20px; }
+        .bread-chips { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
         .bread-chips input { display: none; }
         .bread-chips label {
             flex: 1; text-align: center; background: var(--light-bg); border: 2px solid #eee;
-            padding: 10px; border-radius: 10px; cursor: pointer; font-weight: bold;
-            color: var(--text-dark); transition: 0.2s;
+            padding: 8px; border-radius: 10px; cursor: pointer; font-weight: bold;
+            color: var(--text-dark); transition: 0.2s; min-width: 30%;
         }
         .bread-chips input:checked + label { background: var(--main-red); color: var(--white); border-color: var(--main-red); }
 
@@ -114,7 +195,6 @@
             align-items: center; gap: 10px; font-family: inherit; box-shadow: 0 4px 10px rgba(211,47,47,0.3);
         }
 
-        /* السلة العائمة والمودال */
         .floating-cart {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background-color: var(--dark-red); color: var(--white); padding: 12px 30px;
@@ -138,7 +218,6 @@
         .qty-controls { display: flex; align-items: center; gap: 10px; }
         .qty-btn { background-color: var(--light-bg); border: 1px solid #ddd; width: 28px; height: 28px; border-radius: 6px; font-weight: bold; cursor: pointer; }
         
-        /* فورم بيانات العميل */
         .checkout-form { background: #f1f2f6; padding: 15px; border-radius: 12px; margin-top: 20px; }
         .form-title { font-size: 16px; font-weight: bold; color: var(--dark-red); margin: 0 0 15px 0; border-bottom: 1px solid #ddd; padding-bottom: 5px;}
         .form-group { margin-bottom: 12px; }
@@ -155,6 +234,13 @@
     </style>
 </head>
 <body>
+
+    <div id="splash-screen">
+        <i class="fa-solid fa-utensils splash-icon"></i>
+        <h1 class="splash-title">الواحة</h1>
+        <div class="splash-subtitle">للأكلة الشعبية أصول</div>
+        <div class="splash-loader"></div>
+    </div>
 
     <div class="hero-banner">
         <div class="quick-contact">
@@ -174,15 +260,14 @@
         <span class="cart-count" id="cart-counter">0</span>
     </button>
 
-    <!-- نافذة اختيار العيش والكمية -->
     <div id="options-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="opt-title" style="font-size: 18px;">اسم الصنف</h2>
-                <span class="close-btn" onclick="closeOptions()">&times;</span>
+                <span class="close-btn" onclick="closeOptions()">×</span>
             </div>
             
-            <div id="bread-section">
+            <div id="bread-section" style="display: none;">
                 <h4 style="margin-top:0; margin-bottom:12px; color:var(--text-dark);">اختار نوع العيش:</h4>
                 <div class="bread-chips">
                     <input type="radio" name="bread" id="b-baladi" value="بلدي" checked>
@@ -192,6 +277,11 @@
                     <input type="radio" name="bread" id="b-fino" value="فينو">
                     <label for="b-fino">فينو</label>
                 </div>
+            </div>
+
+            <div id="size-section" style="display: none;">
+                <h4 style="margin-top:0; margin-bottom:12px; color:var(--text-dark);">اختار الحجم:</h4>
+                <div class="bread-chips" id="dynamic-sizes"></div>
             </div>
 
             <div class="modal-qty-container">
@@ -209,29 +299,24 @@
         </div>
     </div>
 
-    <!-- نافذة سلة الطلبات وبيانات العميل -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>مراجعة الطلب</h2>
-                <span class="close-btn" onclick="closeCart()">&times;</span>
+                <span class="close-btn" onclick="closeCart()">×</span>
             </div>
             <div id="cart-items-container"></div>
             
-            <!-- فورم بيانات العميل -->
             <div class="checkout-form">
                 <h3 class="form-title">بيانات التوصيل</h3>
-                
                 <div class="form-group">
                     <label>الاسم:</label>
                     <input type="text" id="cust-name" placeholder="اكتب اسمك هنا" required>
                 </div>
-                
                 <div class="form-group">
                     <label>رقم الموبايل:</label>
                     <input type="tel" id="cust-phone" placeholder="01xxxxxxxxx" required>
                 </div>
-
                 <div class="form-group">
                     <label>نوع الطلب:</label>
                     <select id="cust-order-type" onchange="toggleDeliveryFields()">
@@ -239,7 +324,6 @@
                         <option value="تيك أواي">تيك أواي (استلام من المطعم)</option>
                     </select>
                 </div>
-
                 <div id="delivery-fields">
                     <div class="form-group">
                         <label>المنطقة:</label>
@@ -253,7 +337,6 @@
                             <option value="20">الحي الثالث - 20 ج.م</option>
                         </select>
                     </div>
-                    
                     <div class="form-group">
                         <label>العنوان تفصيلاً:</label>
                         <input type="text" id="cust-address" placeholder="رقم العمارة، الشارع، علامة مميزة">
@@ -265,18 +348,26 @@
                 <span>خدمة التوصيل:</span>
                 <span><span id="delivery-price">0</span> ج.م</span>
             </div>
-
             <div class="total-section">
                 <span>الإجمالي النهائي:</span>
                 <span style="color:var(--main-red);"><span id="total-price">0</span> ج.م</span>
             </div>
-
             <button class="whatsapp-btn" onclick="sendWhatsAppOrder()">
                 إرسال الطلب <i class="fab fa-whatsapp" style="font-size: 24px;"></i>
             </button>
         </div>
     </div>
-    <script>
+        <script>
+        // إخفاء الـ Splash Screen بعد ثانية ونصف
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.classList.add('fade-out');
+                }
+            }, 1600); // 1.6 ثانية كافية للشياكة
+        });
+
         const categoriesWithBread = ['foul', 'falafel', 'fries', 'omelette', 'mix'];
         let selectedItemForAdd = null; 
         let currentModalQty = 1; 
@@ -293,8 +384,7 @@
                     { name: "فول ع طعمية ع باذنجان", price: 25 }, { name: "فول ع أومليت", price: 30 },
                     { name: "فول ع باذنجان", price: 18 }, { name: "فول ع بابا غنوج", price: 20 },
                     { name: "فول بالصلصة", price: 15 }, { name: "فول دبل", price: 18 },
-                    { name: "فول مخصوص", price: 18 }, { name: "فول ع بيض مسلوق", price: 25 },
-                    { name: "فول ع اومليت بالبسطرمه", price: 35 }, { name: "فول ع صوابع", price: 22 }
+                    { name: "فول مخصوص", price: 18 }, { name: "فول ع بيض مسلوق", price: 25 }
                 ]
             },
             {
@@ -366,17 +456,31 @@
             {
                 id: "boxes", title: "ركن العلب",
                 items: [
-                    { name: "علبة فول سادة كبير", price: 30 }, { name: "علبة فول زيت حار كبير", price: 35 },
-                    { name: "علبة فول اسكندراني كبير", price: 40 }, { name: "علبة فول بالبيض كبير", price: 45 },
-                    { name: "علبة فول بالبسطرمة كبير", price: 50 }, { name: "علبة عجينة", price: 20 },
-                    { name: "علبة مسقعة", price: 32 }, { name: "علبة جبنة قريش", price: 35 },
-                    { name: "علبة بورية", price: 35 }, { name: "علبة باذنجان", price: 15 },
-                    { name: "علبة شكشوكة", price: 35 }, { name: "باكيت صوابع", price: 35 },
-                    { name: "باكيت شيبسي", price: 30 }, { name: "طبق بسطرمة", price: 40 },
-                    { name: "طبق أومليت", price: 30 }, { name: "طبق أومليت رومي", price: 40 },
-                    { name: "طبق أومليت خضار", price: 40 }, { name: "طبق بيتزا", price: 40 },
-                    { name: "علبة فول بالصلصة", price: 35 }, { name: "باكيت بطاطس صوابع", price: 40 },
-                    { name: "باكيت بطاطس جمبري", price: 40 }
+                    { name: "علبة فول سادة", price: 25, sizes: { "صغير": 25, "كبير": 30 } },
+                    { name: "علبة فول زيت زيتون", price: 30, sizes: { "صغير": 30, "كبير": 40 } },
+                    { name: "علبة فول زيت حار", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
+                    { name: "علبة فول الواحة", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
+                    { name: "علبة فول محوج", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
+                    { name: "علبة فول اسكندراني", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
+                    { name: "علبة فول بالبيض", price: 38, sizes: { "صغير": 38, "كبير": 45 } },
+                    { name: "علبة فول أومليت", price: 38, sizes: { "صغير": 38, "كبير": 45 } },
+                    { name: "علبة فول بالبسطرمة", price: 40, sizes: { "صغير": 40, "كبير": 50 } },
+                    { name: "علبة عجينة", price: 15, sizes: { "صغير": 15, "كبير": 20 } },
+                    { name: "علبة مسقعة", price: 25, sizes: { "صغير": 25, "كبير": 32 } },
+                    { name: "علبة جبنة قريش", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
+                    { name: "علبة بورية", price: 25, sizes: { "صغير": 25, "كبير": 35 } },
+                    { name: "علبة باذنجان", price: 10, sizes: { "صغير": 10, "كبير": 15 } },
+                    { name: "علبة شكشوكة", price: 25, sizes: { "صغير": 25, "كبير": 35 } },
+                    { name: "باكيت صوابع", price: 20, sizes: { "صغير": 20, "وسط": 25, "كبير": 35 } },
+                    { name: "باكيت شيبسي", price: 20, sizes: { "صغير": 20, "وسط": 25, "كبير": 30 } },
+                    { name: "طبق بسطرمة", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
+                    { name: "طبق أومليت", price: 25, sizes: { "صغير": 25, "كبير": 30 } },
+                    { name: "طبق أومليت رومي", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
+                    { name: "طبق أومليت خضار", price: 30, sizes: { "صغير": 30, "كبير": 40 } },
+                    { name: "طبق بيتزا", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
+                    { name: "علبة فول بالصلصة", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
+                    { name: "باكيت بطاطس صوابع", price: 25, sizes: { "صغير": 25, "وسط": 30, "كبير": 40 } },
+                    { name: "باكيت بطاطس جمبري", price: 25, sizes: { "صغير": 25, "وسط": 30, "كبير": 40 } }
                 ]
             },
             {
@@ -418,15 +522,19 @@
             const section = menuData.find(s => s.id === categoryId);
             const container = document.getElementById('menu-container');
             
-            let itemsHtml = section.items.map(item => `
+            let itemsHtml = section.items.map(item => {
+                let displayPrice = item.price;
+                if(item.sizes) { displayPrice = item.sizes["صغير"]; }
+                return `
                 <div class="menu-card fade-in">
                     <h3 class="card-title">${item.name}</h3>
                     <div class="price-action">
-                        <span class="price">${item.price} ج.م</span>
-                        <button class="add-btn" onclick="openOptions('${item.name}', ${item.price}, '${section.id}')">+</button>
+                        <span class="price">${displayPrice} ج.م</span>
+                        <button class="add-btn" onclick="openOptions('${item.name}', '${section.id}')">+</button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             container.innerHTML = `
                 <section id="${section.id}">
@@ -438,13 +546,15 @@
             `;
         }
 
-        function openOptions(name, price, categoryId) {
-            selectedItemForAdd = { name, price };
+        function openOptions(name, categoryId) {
+            const section = menuData.find(s => s.id === categoryId);
+            const item = section.items.find(i => i.name === name);
+
+            selectedItemForAdd = { name: item.name, price: item.price };
             currentModalQty = 1; 
             
-            document.getElementById('opt-title').innerText = name;
+            document.getElementById('opt-title').innerText = item.name;
             document.getElementById('modal-qty-display').innerText = currentModalQty;
-            updateModalPriceDisplay();
 
             if (categoriesWithBread.includes(categoryId)) {
                 document.getElementById('bread-section').style.display = 'block';
@@ -452,10 +562,36 @@
                 document.getElementById('bread-section').style.display = 'none';
             }
 
+            if (item.sizes) {
+                document.getElementById('size-section').style.display = 'block';
+                let sizeHtml = '';
+                let isFirst = true;
+                for (const [sizeName, sizePrice] of Object.entries(item.sizes)) {
+                    let checked = isFirst ? 'checked' : '';
+                    sizeHtml += `
+                        <input type="radio" name="size" id="s-${sizeName}" value="${sizeName}" onchange="updateSizePrice(${sizePrice})" ${checked}>
+                        <label for="s-${sizeName}">${sizeName}</label>
+                    `;
+                    if(isFirst) {
+                        selectedItemForAdd.price = sizePrice; 
+                        isFirst = false;
+                    }
+                }
+                document.getElementById('dynamic-sizes').innerHTML = sizeHtml;
+            } else {
+                document.getElementById('size-section').style.display = 'none';
+            }
+
+            updateModalPriceDisplay();
             document.getElementById('options-modal').style.display = 'flex';
         }
 
         function closeOptions() { document.getElementById('options-modal').style.display = 'none'; }
+
+        function updateSizePrice(newPrice) {
+            selectedItemForAdd.price = newPrice;
+            updateModalPriceDisplay();
+        }
 
         function changeModalQty(change) {
             if (currentModalQty + change >= 1) {
@@ -472,18 +608,23 @@
 
         function confirmAdd() {
             let finalName = selectedItemForAdd.name;
-            const price = selectedItemForAdd.price;
+            const finalPrice = selectedItemForAdd.price;
 
             if (document.getElementById('bread-section').style.display === 'block') {
                 const selectedBread = document.querySelector('input[name="bread"]:checked').value;
                 finalName += ` [عيش ${selectedBread}]`;
             }
 
-            let existingItem = cart.find(item => item.name === finalName);
+            if (document.getElementById('size-section').style.display === 'block') {
+                const selectedSize = document.querySelector('input[name="size"]:checked').value;
+                finalName += ` [حجم ${selectedSize}]`;
+            }
+
+            let existingItem = cart.find(item => item.name === finalName && item.price === finalPrice);
             if (existingItem) {
                 existingItem.qty += currentModalQty; 
             } else {
-                cart.push({ name: finalName, price: price, qty: currentModalQty });
+                cart.push({ name: finalName, price: finalPrice, qty: currentModalQty });
             }
             
             updateCartUI();
@@ -610,3 +751,4 @@
     </script>
 </body>
 </html>
+
