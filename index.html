@@ -24,25 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed; top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: linear-gradient(135deg, #8e0000, #d32f2f);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 9999; color: var(--white);
-            transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
-        }
-        .splash-icon { font-size: 70px; margin-bottom: 15px; animation: pulseIcon 1.5s infinite ease-in-out; color: #ffe082; }
-        .splash-title { font-size: 48px; font-weight: 900; margin: 0; text-shadow: 2px 4px 10px rgba(0,0,0,0.4); }
-        .splash-subtitle { font-size: 18px; font-weight: 700; margin-top: 8px; background: rgba(255, 255, 255, 0.2); padding: 6px 20px; border-radius: 20px; }
-        .splash-loader { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid var(--white); border-radius: 50%; margin-top: 30px; animation: spin 0.8s linear infinite; }
-        #splash-screen.fade-out { opacity: 0; transform: scale(1.08); visibility: hidden; }
-
-        @keyframes pulseIcon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         /* Header & Nav */
         .hero-banner { width: 100%; height: 200px; background: linear-gradient(135deg, var(--dark-red), var(--main-red)); display: flex; align-items: center; justify-content: center; text-align: center; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .hero-content { color: var(--white); z-index: 2;}
@@ -112,13 +93,6 @@
     </style>
 </head>
 <body>
-
-    <div id="splash-screen">
-        <i class="fa-solid fa-utensils splash-icon"></i>
-        <h1 class="splash-title">الواحة</h1>
-        <div class="splash-subtitle">للأكلة الشعبية أصول</div>
-        <div class="splash-loader"></div>
-    </div>
 
     <div class="hero-banner">
         <div class="quick-contact">
@@ -235,14 +209,7 @@
             </button>
         </div>
     </div>
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                if (splash) { splash.classList.add('fade-out'); }
-            }, 1600);
-        });
-
+        <script>
         const categoriesWithBread = ['foul', 'falafel', 'fries', 'omelette', 'mix'];
         let selectedItemForAdd = null; 
         let currentModalQty = 1; 
@@ -253,22 +220,14 @@
             {
                 id: "foul", title: "سندوتشات الفول",
                 items: [
-                    { name: "فول الواحة", price: 15 },
-                    { name: "فول زيت حار", price: 16 },
-                    { name: "فول زيت زيتون", price: 16 },
-                    { name: "فول اسكندراني", price: 16 },
-                    { name: "فول ع طعمية", price: 18 },
-                    { name: "فول ع طعمية محشية", price: 20 },
-                    { name: "فول ع طعمية ع باذنجان", price: 25 },
-                    { name: "فول ع أومليت", price: 30 },
-                    { name: "فول ع أومليت بسطرمة", price: 35 },
-                    { name: "فول ع باذنجان", price: 18 },
-                    { name: "فول ع بابا غنوج", price: 20 },
-                    { name: "فول بالصلصة", price: 15 },
-                    { name: "فول دبل", price: 18 },
-                    { name: "فول مخصوص", price: 18 },
-                    { name: "فول ع صوابع", price: 22 },
-                    { name: "فول ع بيض مسلوق", price: 25 }
+                    { name: "فول الواحة", price: 15 }, { name: "فول زيت حار", price: 16 },
+                    { name: "فول زيت زيتون", price: 16 }, { name: "فول اسكندراني", price: 16 },
+                    { name: "فول ع طعمية", price: 18 }, { name: "فول ع طعمية محشية", price: 20 },
+                    { name: "فول ع طعمية ع باذنجان", price: 25 }, { name: "فول ع أومليت", price: 30 },
+                    { name: "فول ع أومليت بسطرمة", price: 35 }, { name: "فول ع باذنجان", price: 18 },
+                    { name: "فول ع بابا غنوج", price: 20 }, { name: "فول بالصلصة", price: 15 },
+                    { name: "فول دبل", price: 18 }, { name: "فول مخصوص", price: 18 },
+                    { name: "فول ع صوابع", price: 22 }, { name: "فول ع بيض مسلوق", price: 25 }
                 ]
             },
             {
@@ -283,447 +242,14 @@
             {
                 id: "falafel", title: "سندوتشات الطعمية",
                 items: [
-                    { name: "طعمية عادي", price: 15 },
-                    { name: "طعمية كفتة", price: 15 },
-                    { name: "طعمية محشية", price: 18 },
-                    { name: "طعمية بالبيض", price: 22 },
-                    { name: "طعمية ع باذنجان", price: 20 },
-                    { name: "طعمية ع بابا غنوج", price: 20 },
-                    { name: "طعمية ع بطاطس", price: 24 },
-                    { name: "طعمية ع مسقعة", price: 20 },
-                    { name: "طعمية بالبسطرمة", price: 30 },
-                    { name: "طعمية كيري", price: 30 },
-                    { name: "طعمية ع أومليت", price: 30 },
-                    { name: "طعمية ع أومليت بسطرمة", price: 30 },
-                    { name: "طعمية ع شيبسي", price: 20 },
-                    { name: "طعمية ع جبنة", price: 20 },
-                    { name: "طعمية دبل", price: 18 },
-                    { name: "طعمية عين كتكوت", price: 20 }
-                ]
-            },
-
-            {
-   
-                id: "fries", title: "سندوتشات البطاطس",
-                items: [
-                    { name: "بطاطس صوابع", price: 22 }, { name: "بطاطس ع جبنة قريش", price: 24 },
-                    { name: "صوابع ع باذنجان", price: 24 }, { name: "صوابع رومي", price: 35 },
-                    { name: "صوابع أومليت", price: 30 }, { name: "صوابع أومليت بسطرمة", price: 35 },
-                    { name: "صوابع أومليت بيتزا", price: 40 }, { name: "صوابع ع مقلية", price: 40 },
-                    { name: "صوابع بالبيض", price: 25 }, { name: "صوابع كاتشب", price: 20 },
-                    { name: "صوابع كاتشب مايونيز", price: 22 }, { name: "صوابع بابا غنوج", price: 25 },
-                    { name: "صوابع جمبري", price: 20 }, { name: "شيبسي", price: 18 },
-                    { name: "شيبسي رومي", price: 30 }, { name: "شيبسي بالبيض", price: 25 },
-                    { name: "شيبسي أومليت", price: 25 }, { name: "شيبسي كاتشب مايونيز", price: 20 },
-                    { name: "شيبسي ع بابا غنوج", price: 20 }, { name: "شيبسي ع باذنجان", price: 20 },
-                    { name: "بطاطس بورية", price: 16 }, { name: "بطاطس بورية بالبيض", price: 25 },
-                    { name: "بطاطس بورية بالبيض المقلي", price: 25 }, { name: "بطاطس بورية ع جبنة رومي", price: 35 }
-                ]
-            },
-            
-            {
-                id: "omelette", title: "سندوتشات الأومليت",
-                items: [
-                    { name: "بيض مسلوق", price: 16 }, { name: "بيض ع باذنجان", price: 20 },
-                    { name: "بيض مدحرج", price: 18 }, { name: "بيض أومليت", price: 20 },
-                    { name: "أومليت بسطرمة", price: 30 }, { name: "أومليت رومي", price: 30 },
-                    { name: "أومليت سوسيس", price: 25 }, { name: "أومليت خضار", price: 25 },
-                    { name: "أومليت بيتزا", price: 40 }
-                ]
-            },
-            {
-                id: "mix", title: "سندوتشات متنوع",
-                items: [
-                    { name: "جبنة قريش", price: 18 }, { name: "جبنة بالبيض", price: 22 },
-                    { name: "سندوتش باذنجان", price: 15 }, { name: "سندوتش مسقعة", price: 15 },
-                    { name: "سندوتش بابا غنوج", price: 15 }, { name: "سندوتش عجة بلدي", price: 20 },
-                    { name: "سندوتش شكشوكة", price: 15 }, { name: "سندوتش شكشوكة مخصوص", price: 20 },
-                    { name: "ديناميت", price: 35 }, { name: "سندوتش جبنة مقلية", price: 35 }
-                ]
-            },
-            {
-                id: "sofra", title: "سفرة الواحة",
-                items: [
-                    { name: "طبق فول حار / حلو", price: 55 }, { name: "طبق فول زيت زيتون", price: 55 },
-                    { name: "طبق فول اسكندراني", price: 55 }, { name: "طبق طعمية", price: 12 },
-                    { name: "طبق طعمية محشية", price: 15 }, { name: "طبق طعمية كيري", price: 20 },
-                    { name: "طبق بيض", price: 15 }, { name: "طبق بابا غنوج", price: 20 },
-                    { name: "طبق بطاطس", price: 25 }, { name: "طبق مسقعة", price: 20 },
-                    { name: "طبق باذنجان", price: 12 }, { name: "طبق شكشوكة", price: 20 },
-                    { name: "طبق شكشوكة مخصوص", price: 25 }, { name: "طبق عجة", price: 20 },
-                    { name: "طبق أومليت سادة", price: 30, sizes: { "S": 30, "L": 40 } },
-                    { name: "طبق اباتشي", price: 35, sizes: { "S": 35, "L": 40 } },
-                    { name: "طبق طرنشات", price: 15, sizes: { "S": 15, "L": 20 } },
-                    { name: "طبق أماطي", price: 15, sizes: { "S": 15, "L": 20 } },
-                    { name: "طبق أومليت بسطرمة", price: 35, sizes: { "S": 35, "L": 40 } },
-                    { name: "طبق أومليت بيتزا", price: 35, sizes: { "S": 35, "L": 40 } },
-                    { name: "طبق أومليت خضار", price: 30, sizes: { "S": 30, "L": 40 } },
-                    { name: "طبق مقلية", price: 40 },
-                    { name: "طبق أومليت رومي", price: 35, sizes: { "S": 35, "L": 40 } },
-                    { name: "طبق فول زبدة", price: 45 }, { name: "طبق جمبري", price: 25 },
-                    { name: "طبق أومليت سوسيس", price: 35, sizes: { "S": 35, "L": 40 } },
-                    { name: "طبق طحينة", price: 20, sizes: { "S": 20, "L": 25 } }
-                ]
-            },
-            {
-                id: "boxes", title: "ركن العلب",
-                items: [
-                    { name: "علبة فول سادة", price: 25, sizes: { "صغير": 25, "كبير": 30 } },
-                    { name: "علبة فول زيت زيتون", price: 30, sizes: { "صغير": 30, "كبير": 40 } },
-                    { name: "علبة فول زيت حار", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
-                    { name: "علبة فول الواحة", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
-                    { name: "علبة فول محوج", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
-                    { name: "علبة فول اسكندراني", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
-                    { name: "علبة فول بالبيض", price: 38, sizes: { "صغير": 38, "كبير": 45 } },
-                    { name: "علبة فول أومليت", price: 38, sizes: { "صغير": 38, "كبير": 45 } },
-                    { name: "علبة فول بالبسطرمة", price: 40, sizes: { "صغير": 40, "كبير": 50 } },
-                    { name: "علبة عجينة", price: 15, sizes: { "صغير": 15, "كبير": 20 } },
-                    { name: "علبة مسقعة", price: 25, sizes: { "صغير": 25, "كبير": 32 } },
-                    { name: "علبة جبنة قريش", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
-                    { name: "علبة بورية", price: 25, sizes: { "صغير": 25, "كبير": 35 } },
-                    { name: "علبة باذنجان", price: 10, sizes: { "صغير": 10, "كبير": 15 } },
-                    { name: "علبة شكشوكة", price: 25, sizes: { "صغير": 25, "كبير": 35 } },
-                    { name: "باكيت صوابع", price: 20, sizes: { "صغير": 20, "وسط": 25, "كبير": 35 } },
-                    { name: "باكيت شيبسي", price: 20, sizes: { "صغير": 20, "وسط": 25, "كبير": 30 } },
-                    { name: "طبق بسطرمة", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
-                    { name: "طبق أومليت", price: 25, sizes: { "صغير": 25, "كبير": 30 } },
-                    { name: "طبق أومليت رومي", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
-                    { name: "طبق أومليت خضار", price: 30, sizes: { "صغير": 30, "كبير": 40 } },
-                    { name: "طبق بيتزا", price: 35, sizes: { "صغير": 35, "كبير": 40 } },
-                    { name: "علبة فول بالصلصة", price: 30, sizes: { "صغير": 30, "كبير": 35 } },
-                    { name: "باكيت بطاطس صوابع", price: 25, sizes: { "صغير": 25, "وسط": 30, "كبير": 40 } },
-                    { name: "باكيت بطاطس جمبري", price: 25, sizes: { "صغير": 25, "وسط": 30, "كبير": 40 } }
-                ]
-            },
-            {
-                id: "salads", title: "ركن السلطات والمخللات",
-                items: [
-                    { name: "سلطة بلدي", price: 15 }, { name: "سلطة طحينة", price: 25 },
-                    { name: "طبق باذنجان مخلل مقلي", price: 25 }, { name: "طحينة", price: 15 },
-                    { name: "بابا غنوج", price: 25 }, { name: "خيار مخلل / طبق بصل / ليمون", price: 15 },
-                    { name: "طرشي", price: 15 }, { name: "طبق باذنجان", price: 15 },
-                    { name: "طبق طرنشات", price: 15 }, { name: "رغيف عيش", price: 3.5 },
-                    { name: "رغيف عيش شامي", price: 2 }
-                ]
-            },
-            {
-                id: "drinks", title: "ركن المشروبات",
-                items: [
-                    { name: "كانز كبيرة", price: 20 }, { name: "مياة معدنية", price: 10 }
-                ]
-            }
-        ];
-
-        function initMenu() {
-            const navContainer = document.getElementById('nav-container');
-            let navHtml = '';
-            menuData.forEach((sec, index) => {
-                navHtml += `<button class="category-link ${index === 0 ? 'active' : ''}" onclick="selectCategory('${sec.id}', this)">${sec.title}</button>`;
-            });
-            navContainer.innerHTML = navHtml;
-            if(menuData.length > 0) renderCategory(menuData[0].id);
-        }
-
-        function selectCategory(id, btnElement) {
-            document.querySelectorAll('.category-link').forEach(btn => btn.classList.remove('active'));
-            if(btnElement) btnElement.classList.add('active');
-            renderCategory(id);
-        }
-
-        function renderCategory(categoryId) {
-            const section = menuData.find(s => s.id === categoryId);
-            const container = document.getElementById('menu-container');
-            
-            let itemsHtml = section.items.map(item => {
-                let displayPrice = item.price;
-                if(item.sizes) { 
-                    const prices = Object.values(item.sizes);
-                    displayPrice = prices.join(' / '); 
-                }
-                
-                return `
-                <div class="menu-card fade-in">
-                    <h3 class="card-title">${item.name}</h3>
-                    <div class="price-action">
-                        <span class="price" style="font-size: 15px;">${displayPrice} ج.م</span>
-                        <button class="add-btn" onclick="openOptions('${item.name}', '${section.id}')">+</button>
-                    </div>
-                </div>
-                `;
-            }).join('');
-
-            container.innerHTML = `
-                <section id="${section.id}">
-                    <h2 class="section-title fade-in">${section.title}</h2>
-                    <div class="menu-grid">
-                        ${itemsHtml}
-                    </div>
-                </section>
-            `;
-        }
-
-        function openOptions(name, categoryId) {
-            const section = menuData.find(s => s.id === categoryId);
-            const item = section.items.find(i => i.name === name);
-
-            selectedItemForAdd = { name: item.name, price: item.price };
-            currentModalQty = 1; 
-            
-            document.getElementById('opt-title').innerText = item.name;
-            document.getElementById('modal-qty-display').innerText = currentModalQty;
-
-            if (categoriesWithBread.includes(categoryId)) {
-                document.getElementById('bread-section').style.display = 'block';
-            } else {
-                document.getElementById('bread-section').style.display = 'none';
-            }
-
-            if (item.sizes) {
-                document.getElementById('size-section').style.display = 'block';
-                let sizeHtml = '';
-                let isFirst = true;
-                for (const [sizeName, sizePrice] of Object.entries(item.sizes)) {
-                    let checked = isFirst ? 'checked' : '';
-                    sizeHtml += `
-                        <input type="radio" name="size" id="s-${sizeName}" value="${sizeName}" onchange="updateSizePrice(${sizePrice})" ${checked}>
-                        <label for="s-${sizeName}">${sizeName}</label>
-                    `;
-                    if(isFirst) {
-                        selectedItemForAdd.price = sizePrice; 
-                        isFirst = false;
-                    }
-                }
-                document.getElementById('dynamic-sizes').innerHTML = sizeHtml;
-            } else {
-                document.getElementById('size-section').style.display = 'none';
-            }
-
-            updateModalPriceDisplay();
-            document.getElementById('options-modal').style.display = 'flex';
-        }
-
-        function closeOptions() { document.getElementById('options-modal').style.display = 'none'; }
-
-        function updateSizePrice(newPrice) {
-            selectedItemForAdd.price = newPrice;
-            updateModalPriceDisplay();
-        }
-
-        function changeModalQty(change) {
-            if (currentModalQty + change >= 1) {
-                currentModalQty += change;
-                document.getElementById('modal-qty-display').innerText = currentModalQty;
-                updateModalPriceDisplay();
-            }
-        }
-
-        function updateModalPriceDisplay() {
-            let total = selectedItemForAdd.price * currentModalQty;
-            document.getElementById('opt-price').innerText = total;
-        }
-
-        function confirmAdd() {
-            let finalName = selectedItemForAdd.name;
-            const finalPrice = selectedItemForAdd.price;
-
-            if (document.getElementById('bread-section').style.display === 'block') {
-                const selectedBread = document.querySelector('input[name="bread"]:checked').value;
-                finalName += ` [عيش ${selectedBread}]`;
-            }
-
-            if (document.getElementById('size-section').style.display === 'block') {
-                const selectedSize = document.querySelector('input[name="size"]:checked').value;
-                finalName += ` [حجم ${selectedSize}]`;
-            }
-
-            let existingItem = cart.find(item => item.name === finalName && item.price === finalPrice);
-            if (existingItem) {
-                existingItem.qty += currentModalQty; 
-            } else {
-                cart.push({ name: finalName, price: finalPrice, qty: currentModalQty });
-            }
-            
-            updateCartUI();
-            closeOptions();
-            
-            const cartBtn = document.querySelector('.floating-cart');
-            cartBtn.style.transform = 'translateX(-50%) scale(1.1)';
-            setTimeout(() => { cartBtn.style.transform = 'translateX(-50%) scale(1)'; }, 200);
-        }
-
-        function toggleDeliveryFields() {
-            const orderType = document.getElementById('cust-order-type').value;
-            const deliveryFields = document.getElementById('delivery-fields');
-            const deliveryFeeDisplay = document.getElementById('delivery-fee-display');
-            
-            if (orderType === 'دليفري') {
-                deliveryFields.style.display = 'block';
-                deliveryFeeDisplay.style.display = 'flex';
-            } else {
-                deliveryFields.style.display = 'none';
-                deliveryFeeDisplay.style.display = 'none';
-            }
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            document.getElementById('cart-counter').innerText = totalQty;
-
-            let container = document.getElementById('cart-items-container');
-            container.innerHTML = '';
-            let subTotal = 0;
-
-            cart.forEach((item, index) => {
-                let itemTotal = item.price * item.qty;
-                subTotal += itemTotal;
-                container.innerHTML += `
-                    <div class="cart-item">
-                        <div style="flex-grow:1">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-price">${item.price} ج.م</div>
-                        </div>
-                        <div class="qty-controls">
-                            <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-                            <span style="font-weight:bold">${item.qty}</span>
-                            <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            let deliveryFee = 0;
-            const orderType = document.getElementById('cust-order-type').value;
-            if(orderType === 'دليفري') {
-                const areaSelect = document.getElementById('cust-area');
-                if (areaSelect.value !== "0") {
-                    deliveryFee = parseInt(areaSelect.value);
-                }
-            }
-
-            document.getElementById('delivery-price').innerText = deliveryFee;
-            document.getElementById('total-price').innerText = subTotal + deliveryFee;
-        }
-
-        function changeQty(index, change) {
-            cart[index].qty += change;
-            if (cart[index].qty <= 0) cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function openCart() {
-            if(cart.length === 0) { alert("السلة فاضية يا فندم، اختار طلبك الأول!"); return; }
-            document.getElementById('cart-modal').style.display = 'flex';
-        }
-
-        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
-
-        function sendWhatsAppOrder() {
-            if (cart.length === 0) return;
-
-            let name = document.getElementById('cust-name').value.trim();
-            let phone = document.getElementById('cust-phone').value.trim();
-            let orderType = document.getElementById('cust-order-type').value;
-            let areaSelect = document.getElementById('cust-area');
-            let areaName = areaSelect.options[areaSelect.selectedIndex].text.split(' -')[0];
-            let addressDetails = document.getElementById('cust-address').value.trim();
-            
-            if(!name || !phone) {
-                alert("الرجاء إدخال الاسم ورقم الموبايل!");
-                return;
-            }
-            if(orderType === 'دليفري' && (areaSelect.value === "0" || !addressDetails)) {
-                alert("الرجاء اختيار المنطقة وكتابة العنوان تفصيلاً!");
-                return;
-            }
-
-            let orderId = Math.floor(1000 + Math.random() * 9000);
-
-            let message = `👤 العميل: ${name}%0A`;
-            message += `📱 الموبايل: ${phone}%0A`;
-            message += `🛵 نوع الطلب: ${orderType}%0A`;
-            
-            if (orderType === 'دليفري') {
-                message += `📍 المنطقة: ${areaName}%0A`;
-                message += `🏠 العنوان تفصيلاً: ${addressDetails}%0A`;
-                message += `🗺️ اللوكيشن (GPS): https://www.google.com/maps?q=30.0799,31.3401%0A`;
-            }
-            
-            message += `_________________________________%0A%0A`;
-            message += `📋 جدول الطلبات:%0A`;
-            message += `_________________________________%0A%0A`;
-            
-            cart.forEach(item => {
-                message += `🔶 ${item.qty} » ${item.name}%0A`;
-            });
-            
-            message += `_________________________________%0A%0A`;
-            message += `✅ رقم الطلب للمتابعة: WA-${orderId}%0A`;
-
-            window.open(`https://wa.me/${restaurantWhatsApp}?text=${message}`, '_blank');
-        }
-
-        initMenu();
-    </script>
-</body>
-</html>
-    <script>
-        const categoriesWithBread = ['foul', 'falafel', 'fries', 'omelette', 'mix'];
-        let selectedItemForAdd = null; 
-        let currentModalQty = 1; 
-        let cart = [];
-        const restaurantWhatsApp = "201154188441"; 
-
-        const menuData = [
-            {
-                id: "foul", title: "سندوتشات الفول",
-                items: [
-                    { name: "فول الواحة", price: 15 },
-                    { name: "فول زيت حار", price: 16 },
-                    { name: "فول زيت زيتون", price: 16 },
-                    { name: "فول اسكندراني", price: 16 },
-                    { name: "فول ع طعمية", price: 18 },
-                    { name: "فول ع طعمية محشية", price: 20 },
-                    { name: "فول ع طعمية ع باذنجان", price: 25 },
-                    { name: "فول ع أومليت", price: 30 },
-                    { name: "فول ع أومليت بسطرمة", price: 35 },
-                    { name: "فول ع باذنجان", price: 18 },
-                    { name: "فول ع بابا غنوج", price: 20 },
-                    { name: "فول بالصلصة", price: 15 },
-                    { name: "فول دبل", price: 18 },
-                    { name: "فول مخصوص", price: 18 },
-                    { name: "فول ع صوابع", price: 22 },
-                    { name: "فول ع بيض مسلوق", price: 25 }
-                ]
-            },
-            {
-                id: "falafel-discs", title: "أقراص الطعمية",
-                items: [
-                    { name: "قرص طعمية", price: 3 }, { name: "قرص سادة كبير", price: 6 },
-                    { name: "قرص طعمية كفتة", price: 3 }, { name: "قرص طعمية محشية", price: 8 },
-                    { name: "قرص مجة", price: 25 }, { name: "قرص طعمية كيري", price: 25 },
-                    { name: "قرص عين كتكوت", price: 25 }, { name: "قرص طعمية بالبسطرمة", price: 25 }
-                ]
-            },
-            {
-                id: "falafel", title: "سندوتشات الطعمية",
-                items: [
-                    { name: "طعمية عادي", price: 15 },
-                    { name: "طعمية كفتة", price: 15 },
-                    { name: "طعمية محشية", price: 18 },
-                    { name: "طعمية بالبيض", price: 22 },
-                    { name: "طعمية ع باذنجان", price: 20 },
-                    { name: "طعمية ع بابا غنوج", price: 20 },
-                    { name: "طعمية ع بطاطس", price: 24 },
-                    { name: "طعمية ع مسقعة", price: 20 },
-                    { name: "طعمية بالبسطرمة", price: 30 },
-                    { name: "طعمية كيري", price: 30 },
-                    { name: "طعمية ع أومليت", price: 30 },
-                    { name: "طعمية ع أومليت بسطرمة", price: 30 },
-                    { name: "طعمية ع شيبسي", price: 20 },
-                    { name: "طعمية ع جبنة", price: 20 },
-                    { name: "طعمية دبل", price: 18 },
-                    { name: "طعمية عين كتكوت", price: 20 }
+                    { name: "طعمية عادي", price: 15 }, { name: "طعمية كفتة", price: 15 },
+                    { name: "طعمية محشية", price: 18 }, { name: "طعمية بالبيض", price: 22 },
+                    { name: "طعمية ع باذنجان", price: 20 }, { name: "طعمية ع بابا غنوج", price: 20 },
+                    { name: "طعمية ع بطاطس", price: 24 }, { name: "طعمية ع مسقعة", price: 20 },
+                    { name: "طعمية بالبسطرمة", price: 30 }, { name: "طعمية كيري", price: 30 },
+                    { name: "طعمية ع أومليت", price: 30 }, { name: "طعمية ع أومليت بسطرمة", price: 30 },
+                    { name: "طعمية ع شيبسي", price: 20 }, { name: "طعمية ع جبنة", price: 20 },
+                    { name: "طعمية دبل", price: 18 }, { name: "طعمية عين كتكوت", price: 20 }
                 ]
             },
             {
@@ -1089,3 +615,4 @@
     </script>
 </body>
 </html>
+
